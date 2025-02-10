@@ -20,6 +20,8 @@ class RegisterViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.setNavigationBarHidden(false, animated: false)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+                view.addGestureRecognizer(tapGesture)
         
         registerText.text = ""
         registerText.alpha = 0.1
@@ -28,6 +30,16 @@ class RegisterViewController: UIViewController {
         animateRegister()
         blurRegisterandRegisterImage()
     }
+    
+    @IBOutlet weak var registerButtoninfo: UIButton!
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        registerButtoninfo.sendActions(for: .touchUpInside) // Simulates button press
+           textField.resignFirstResponder() // Hide keyboard
+           return true
+       }
+    @objc func dismissKeyboard() {
+            view.endEditing(true)
+        }
     
     @IBOutlet weak var passwordText: UITextField!
     @IBOutlet weak var emailText: UITextField!

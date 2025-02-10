@@ -4,7 +4,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
-        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -320,18 +319,17 @@
                                         <subviews>
                                             <textField opaque="NO" alpha="0.5" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="27O-ZM-Haj">
                                                 <rect key="frame" x="70" y="187" width="300" height="34"/>
-                                                <color key="backgroundColor" name="textfield"/>
+                                                <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="300" id="EIe-ce-aNR"/>
                                                     <constraint firstAttribute="height" constant="34" id="wTU-u4-lbZ"/>
                                                 </constraints>
-                                                <color key="textColor" systemColor="systemBackgroundColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <textField opaque="NO" alpha="0.5" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2XO-hR-KNV">
                                                 <rect key="frame" x="70" y="245" width="300" height="34"/>
-                                                <color key="backgroundColor" name="textfield"/>
+                                                <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="300" id="0N1-Dm-dsQ"/>
                                                     <constraint firstAttribute="height" constant="34" id="bJH-rY-TvC"/>
@@ -369,12 +367,11 @@
                                             </stackView>
                                             <textField opaque="NO" alpha="0.5" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Confirm Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YZb-jj-kvp">
                                                 <rect key="frame" x="70" y="303" width="300" height="34"/>
-                                                <color key="backgroundColor" name="textfield"/>
+                                                <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="300" id="Tsd-8t-x1H"/>
                                                     <constraint firstAttribute="height" constant="34" id="mAf-iC-AGL"/>
                                                 </constraints>
-                                                <color key="textColor" systemColor="systemBackgroundColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                             </textField>
@@ -448,6 +445,7 @@
                         <outlet property="emailText" destination="27O-ZM-Haj" id="h84-UB-uhB"/>
                         <outlet property="errorDescription" destination="rGq-7g-4ew" id="tke-qP-vS3"/>
                         <outlet property="passwordText" destination="2XO-hR-KNV" id="E0v-Nl-077"/>
+                        <outlet property="registerButtoninfo" destination="cfP-t6-6VK" id="OC0-SM-elV"/>
                         <outlet property="registerImage" destination="WEH-cJ-dcb" id="bTb-pe-uV2"/>
                         <outlet property="registerImageLeading" destination="rSE-1i-aRK" id="un4-wh-uET"/>
                         <outlet property="registerText" destination="g6U-xu-hJm" id="dJ2-cQ-Nld"/>
@@ -946,23 +944,20 @@
         <image name="user details messmate" width="100" height="100"/>
         <image name="welcome screen design  messmate light" width="200" height="200"/>
         <image name="welcome screen design 2 messmate light" width="200" height="200"/>
-        <namedColor name="textfield">
-            <color red="0.47600001096725464" green="0.47600001096725464" blue="0.47600001096725464" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="secondarySystemBackgroundColor">
-            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray3Color">
-            <color red="0.78039215689999997" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.7803921568627451" green="0.7803921568627451" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

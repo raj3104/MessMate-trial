@@ -34,6 +34,9 @@ class UserDetailsViewController: UIViewController {
         
         doneButton.isEnabled = true  // ✅ Always enabled
         doneButton.alpha = 1.0
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+                view.addGestureRecognizer(tapGesture)
     }
 
     // MARK: - Hostel Selection
@@ -44,6 +47,15 @@ class UserDetailsViewController: UIViewController {
         girlsHostelButton.alpha = sender == girlsHostelButton ? 1.0 : 0.4
         boysHostelButton.alpha = sender == boysHostelButton ? 1.0 : 0.4
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        doneButton.sendActions(for: .touchUpInside) // Simulates button press
+           textField.resignFirstResponder() // Hide keyboard
+           return true
+       }
+    @objc func dismissKeyboard() {
+            view.endEditing(true)
+        }
     @IBAction func hostelButtonSelected(_ sender: UIButton) {
         selectedHostel=sender.currentTitle
     }
