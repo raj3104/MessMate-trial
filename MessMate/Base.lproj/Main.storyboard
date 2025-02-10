@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,7 +13,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="MessMate" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="ViewController" customModule="MessMate" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -242,7 +243,8 @@
                                                             <color key="baseForegroundColor" systemColor="systemBackgroundColor"/>
                                                         </buttonConfiguration>
                                                         <connections>
-                                                            <segue destination="vO4-mz-laW" kind="show" id="9ad-Eb-E3w"/>
+                                                            <action selector="loginBtnPressed:" destination="hlV-zI-LrJ" eventType="touchUpInside" id="8kj-Ga-19E"/>
+                                                            <segue destination="vO4-mz-laW" kind="show" id="cgk-28-8at"/>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tgi-Ul-XPl">
@@ -375,7 +377,7 @@
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                             </textField>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rGq-7g-4ew">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rGq-7g-4ew">
                                                 <rect key="frame" x="70" y="362" width="300" height="21"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="300" id="NYg-dC-UAE"/>
@@ -534,13 +536,13 @@
                                                 <rect key="frame" x="50.666666666666657" y="68.333333333333314" width="339" height="150"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5aW-JW-Md2">
-                                                        <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
+                                                        <rect key="frame" x="0.0" y="1.3333333333333286" width="150" height="147.33333333333331"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="150" id="Hst-K7-eqW"/>
                                                             <constraint firstAttribute="width" constant="150" id="bev-mH-Ivw"/>
                                                         </constraints>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                        <state key="normal" title="Boys Hostel" backgroundImage="boys hostel messmate">
+                                                        <state key="normal" title="Boys Hostel" backgroundImage="person" catalog="system">
                                                             <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
                                                         <connections>
@@ -548,13 +550,14 @@
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V9v-q1-H0V">
-                                                        <rect key="frame" x="189" y="0.0" width="150" height="150"/>
+                                                        <rect key="frame" x="189" y="1.3333333333333286" width="150" height="147.33333333333331"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="150" id="t8V-xy-w7j"/>
                                                             <constraint firstAttribute="width" constant="150" id="u6c-WS-SUR"/>
                                                         </constraints>
+                                                        <color key="tintColor" red="0.91764705879999997" green="0.1572064654" blue="0.85529850900000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                        <state key="normal" title="Girls Hostel" backgroundImage="girls hostel messmate">
+                                                        <state key="normal" title="Girls Hostel" backgroundImage="person" catalog="system">
                                                             <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
                                                         <connections>
@@ -727,7 +730,7 @@
                                                     <constraint firstAttribute="trailing" secondItem="Bcu-CC-lIB" secondAttribute="trailing" id="mxi-zQ-HU9"/>
                                                 </constraints>
                                             </stackView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9OW-iW-jbx">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9OW-iW-jbx">
                                                 <rect key="frame" x="70" y="307" width="300" height="21"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="300" id="0vu-V5-jfY"/>
@@ -768,7 +771,7 @@
                                                 </buttonConfiguration>
                                                 <connections>
                                                     <action selector="loginButtonPressed:" destination="vO4-mz-laW" eventType="touchUpInside" id="g9G-u0-lYd"/>
-                                                    <segue destination="xmH-x8-DBn" kind="show" id="1XY-jI-AJa"/>
+                                                    <segue destination="xmH-x8-DBn" kind="show" identifier="loginToMM" id="1XY-jI-AJa"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -795,6 +798,7 @@
                         <outlet property="emailText" destination="wwn-eE-DM2" id="JF3-RV-9dJ"/>
                         <outlet property="errorDescription" destination="9OW-iW-jbx" id="wYB-7x-0MT"/>
                         <outlet property="imageLeading" destination="Mm7-Xa-CAo" id="ToQ-hN-hg3"/>
+                        <outlet property="loginButtonReal" destination="EbK-0I-rCO" id="gEF-oD-mw8"/>
                         <outlet property="loginImage" destination="guE-Ue-xiz" id="SOl-Ii-eWc"/>
                         <outlet property="loginText" destination="Bcu-CC-lIB" id="en9-1p-COV"/>
                         <outlet property="loginTrailing" destination="mxi-zQ-HU9" id="egw-3y-mef"/>
@@ -819,7 +823,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ybw-5q-df4">
                                         <rect key="frame" x="0.0" y="0.0" width="440" height="408"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello, 1234567891234567891234567" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b7j-Ay-V2D">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="|" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b7j-Ay-V2D">
                                                 <rect key="frame" x="45" y="8" width="350" height="125"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="125" id="Ag5-eb-fOE"/>
@@ -846,6 +850,15 @@
                                                     <constraint firstAttribute="height" constant="100" id="hLo-C3-s0U"/>
                                                 </constraints>
                                             </imageView>
+                                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Lc6-5P-aXZ">
+                                                <rect key="frame" x="120" y="326" width="200" height="32"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <segments>
+                                                    <segment title="Mayuri"/>
+                                                    <segment title="Safal"/>
+                                                    <segment title="CRCL"/>
+                                                </segments>
+                                            </segmentedControl>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
@@ -903,7 +916,28 @@
                             <constraint firstItem="Wlr-4v-So4" firstAttribute="trailing" secondItem="Dn2-6Z-IGT" secondAttribute="trailing" id="i4a-6X-g7M"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="D8f-QY-s9Y"/>
+                    <navigationItem key="navigationItem" id="D8f-QY-s9Y">
+                        <nil key="title"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="trash" id="N1J-Zw-Evn"/>
+                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="32b-ug-9SP">
+                            <rect key="frame" x="0.0" y="0.0" width="0.0" height="33"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <segments>
+                                <segment title="">
+                                    <imageReference key="image" image="person.fill" catalog="system" variableValue="0.0"/>
+                                </segment>
+                                <segment title="Second"/>
+                            </segments>
+                            <color key="tintColor" red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="selectedSegmentTintColor" red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </segmentedControl>
+                        <barButtonItem key="rightBarButtonItem" title="Item" style="plain" id="HdF-Zt-0bC">
+                            <switch key="customView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="QqI-I1-a0i">
+                                <rect key="frame" x="369" y="6.6666666666666679" width="51" height="31.000000000000004"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </switch>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="greetingLabel" destination="b7j-Ay-V2D" id="IWq-OC-dgA"/>
                         <outlet property="mealImage" destination="j8C-zc-0jN" id="KdG-9c-OwK"/>
@@ -936,10 +970,10 @@
     </scenes>
     <resources>
         <image name="MessMate logo white dark" width="300" height="300"/>
-        <image name="boys hostel messmate" width="150" height="150"/>
-        <image name="girls hostel messmate" width="150" height="150"/>
         <image name="loader" width="225" height="225"/>
         <image name="login design light" width="100" height="100"/>
+        <image name="person" catalog="system" width="128" height="121"/>
+        <image name="person.fill" catalog="system" width="128" height="120"/>
         <image name="register design light" width="100" height="100"/>
         <image name="user details messmate" width="100" height="100"/>
         <image name="welcome screen design  messmate light" width="200" height="200"/>
@@ -948,16 +982,16 @@
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="secondarySystemBackgroundColor">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray3Color">
-            <color red="0.7803921568627451" green="0.7803921568627451" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.78039215689999997" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

@@ -10,11 +10,22 @@ class LoginRegisterViewViewController: UIViewController {
     @IBOutlet weak var loginRegister: UILabel!
 
     @IBOutlet weak var blurText: UIView!
+    
+    override func viewDidAppear(_ animated: Bool) {
+        navigationItem.hidesBackButton = true
+    }
+    
+    
+    @IBAction func loginBtnPressed(_ sender: UIButton) {
+        
+        
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.hidesBackButton = true
         
         // Hide navigation bar (fixing the back button issue)
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
+        //self.navigationController?.setNavigationBarHidden(true, animated: false)
         loginRegister.alpha=0.1
         
         // Start text animation

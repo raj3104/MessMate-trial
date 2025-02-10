@@ -20,6 +20,9 @@ class UserDetailsViewController: UIViewController {
     // Variables to track selections
     var selectedHostel: String?
     var selectedMess: String?
+    override func viewDidAppear(_ animated: Bool) {
+        navigationItem.hidesBackButton = true
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

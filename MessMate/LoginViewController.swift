@@ -49,16 +49,23 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var emailText: UITextField!
     
     @IBAction func realLogin(_ sender: UIButton) {
-        
-        if let otp=passwordtext.text, !otp.isEmpty {
-            let code=otp
-            AuthManager.shared.verifyCode(smsCode: code) { [weak self] success in
-                guard success else{return}
-                DispatchQueue.main.async {
-                    LoginViewController().title="Login Successful"
+        if let email=emailText.text, let password=passwordtext.text {
+            Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
+              guard let strongSelf = self else { return }
+                if error == nil {
+                    let storyboard=UIStoryboard(name: "Main", bundle: nil)
+                    if let accountDetailsVC=storyboard.instantiateViewController(withIdentifier: "AccountViewController") as? AccountViewController{
+                        self?.navigationController?.pushViewController(accountDetailsVC, animated: true)
+                        
+                    }
+                }
+                else{
+                    self?.errorDescription.text=error?.localizedDescription
                 }
             }
         }
+        
+       
     }
     
     @IBOutlet weak var loginButtonReal: UIButton!
@@ -67,11 +74,11 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
            view.addGestureRecognizer(tapGesture)
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
+        //self.navigationController?.setNavigationBarHidden(false, animated: false)
         
-        passwordtext.isHidden=true
+        //passwordtext.isHidden=true
 //        loginButton.setTitle("Send OTP", for: .normal)
-        loginButtonReal.isHidden=true
+        //loginButtonReal.isHidden=true
         loginText.text=""
         loginText.alpha=0.1
        
