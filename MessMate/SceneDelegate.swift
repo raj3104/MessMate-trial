@@ -27,7 +27,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         userRef.getDocument { document, error in
             if let document = document, document.exists {
                 print("✅ User details found. Proceeding to AccountViewController.")
-                window.rootViewController = AccountViewController()
+                
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                if let accountVC = storyboard.instantiateViewController(withIdentifier: "AccountViewController") as? AccountViewController {
+                    window.rootViewController = UINavigationController(rootViewController: accountVC)
+                }
+                
             } else {
                 print("❌ No user details found. Deleting account...")
                 self.deleteUserAccount(user, window: window)
@@ -36,6 +41,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             window.makeKeyAndVisible()
         }
     }
+
 
     private func deleteUserAccount(_ user: User, window: UIWindow) {
         user.delete { error in

@@ -100,7 +100,14 @@ class UserDetailsViewController: UIViewController {
                 print("❌ Error saving details: \(error.localizedDescription)")
             } else {
                 print("✅ User details saved successfully!")
-                self.navigationController?.popViewController(animated: true)
+                //self.navigationController?.popViewController(animated: true)
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                if let userDetailsVC = storyboard.instantiateViewController(withIdentifier: "AccountViewController") as? AccountViewController {
+                    //userDetailsVC.userId = self.userId
+                    self.navigationController?.pushViewController(userDetailsVC, animated: true)
+                } else {
+                    print("❌ Error: UserDetailsViewController not found in storyboard")
+                }
             }
         }
     }
