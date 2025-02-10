@@ -1,6 +1,5 @@
 import UIKit
 import FirebaseFirestore
-import FirebaseAuth
 
 class UserDetailsViewController: UIViewController {
     var userId: String?
@@ -22,16 +21,9 @@ class UserDetailsViewController: UIViewController {
     var selectedHostel: String?
     var selectedMess: String?
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-       
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("🔍 doneButton: \(String(describing: doneButton))")
-        doneButton.isEnabled = false
-        doneButton.alpha = 0.5
+        
         girlsHostelButton.addTarget(self, action: #selector(hostelSelected(_:)), for: .touchUpInside)
         boysHostelButton.addTarget(self, action: #selector(hostelSelected(_:)), for: .touchUpInside)
         crclButton.addTarget(self, action: #selector(messSelected(_:)), for: .touchUpInside)
@@ -40,95 +32,76 @@ class UserDetailsViewController: UIViewController {
         
         userName.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
         
-        // Disable done button initially
-//        doneButton.isEnabled = false
-//        doneButton.alpha = 0.5
-        
-        // Add targets for buttons
-      
+        doneButton.isEnabled = true  // ✅ Always enabled
+        doneButton.alpha = 1.0
     }
 
     // MARK: - Hostel Selection
     @objc func hostelSelected(_ sender: UIButton) {
         selectedHostel = sender.currentTitle
-
+        
         // Visually indicate selection
         girlsHostelButton.alpha = sender == girlsHostelButton ? 1.0 : 0.4
         boysHostelButton.alpha = sender == boysHostelButton ? 1.0 : 0.4
-
-        validateForm() // ✅ Ensure doneButton updates
+    }
+    @IBAction func hostelButtonSelected(_ sender: UIButton) {
+        selectedHostel=sender.currentTitle
+    }
+    
+    @IBAction func messButtonSelected(_ sender: UIButton){
+        selectedMess=sender.currentTitle
+        
     }
 
     @objc func messSelected(_ sender: UIButton) {
         selectedMess = sender.currentTitle
-
-        // Ensure button highlights are properly updated
-        crclButton.isSelected = (sender == crclButton)
-        safalButton.isSelected = (sender == safalButton)
-        mayuriButton.isSelected = (sender == mayuriButton)
-
+        
         // Visually indicate selection
         crclButton.alpha = sender == crclButton ? 1.0 : 0.5
         safalButton.alpha = sender == safalButton ? 1.0 : 0.5
         mayuriButton.alpha = sender == mayuriButton ? 1.0 : 0.5
-
-        validateForm() // ✅ Ensure doneButton updates
     }
-
     
-    // MARK: - Enable/Disable Done Button
     @objc func textFieldChanged() {
-        validateForm()
-    }
-    
-    func validateForm() {
-        print("Checking form validation...")
-        print("UserName: \(userName.text ?? "")")
-        print("Hostel Selected: \(selectedHostel ?? "None")")
-        print("Mess Selected: \(selectedMess ?? "None")")
-
-        let isFormValid = !(userName.text?.isEmpty ?? true) && selectedHostel != nil && selectedMess != nil
-        print("Form Valid: \(isFormValid)")
-
-        doneButton.isEnabled = isFormValid
-        doneButton.alpha = isFormValid ? 1.0 : 0.5
+        // No need to disable the button anymore
     }
 
     // MARK: - Save User Details
     @IBAction func doneButtonPressed(_ sender: UIButton) {
-        guard let userId = Auth.auth().currentUser?.uid else {
-            print("User not logged in")
+        if userId == nil {
+            print("❌ Error: userId is nil")
             return
         }
-        
-        guard let name = userName.text, let hostel = selectedHostel, let mess = selectedMess else {
-            print("All fields are required")
-            return
+
+        if userName.text?.isEmpty ?? true {
+            print("❌ Error: Name field is empty")
+        }
+
+        if selectedHostel == nil {
+            print("❌ Error: No hostel selected")
+        }
+
+        if selectedMess == nil {
+            print("❌ Error: No mess selected")
         }
 
         let db = Firestore.firestore()
-        let userRef = db.collection("users").document(userId)
+        let userRef = db.collection("users").document(userId!)
 
         let userDetails: [String: Any] = [
-            "name": name,
+            "name": userName.text ?? "Unknown",
             "details": [
-                "detail_number_1": ["hostel": hostel, "mess": mess]
+                "detail_number_1": ["hostel": selectedHostel ?? "Not Selected", "mess": selectedMess ?? "Not Selected"]
             ]
         ]
 
         userRef.setData(userDetails) { error in
             if let error = error {
-                print("Error saving details: \(error.localizedDescription)")
+                print("❌ Error saving details: \(error.localizedDescription)")
             } else {
-                print("User details saved successfully!")
+                print("✅ User details saved successfully!")
                 self.navigationController?.popViewController(animated: true)
             }
         }
     }
-    
-    @IBAction func hostelButtonSelected(_ sender: UIButton) {
-        }
-    
-    @IBAction func messButtonSelected(_ sender: UIButton) {
-       }
 }

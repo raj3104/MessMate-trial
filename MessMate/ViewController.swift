@@ -25,14 +25,14 @@ class ViewController: UIViewController {
     @IBOutlet weak var logoMainTop: NSLayoutConstraint!
     
     func animateLoader() {
-        self.loaderImageTop.constant = -300
+        //self.loaderImageTop.constant = -300
         self.view.layoutIfNeeded()
         
         UIView.animate(withDuration: 0.7, animations: {
-            self.loaderImageTop.constant = self.view.bounds.height
+            //self.loaderImageTop.constant = self.view.bounds.height
             self.view.layoutIfNeeded()
         }, completion: { _ in
-            self.loaderImageTop.constant = -300
+            //self.loaderImageTop.constant = -300
             self.view.layoutIfNeeded()
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
