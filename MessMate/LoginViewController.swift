@@ -28,7 +28,12 @@ class LoginViewController: UIViewController {
                     
                 }
                 else{
-                    self.performSegue(withIdentifier: "loginToMM", sender: self)
+                    let storyboard=UIStoryboard(name: "Main", bundle: nil)
+                    if let accountDetailsVC=storyboard.instantiateViewController(withIdentifier: "AccountViewController") as? AccountViewController{
+                        self.navigationController?.pushViewController(accountDetailsVC, animated: true)
+                        
+                    }
+
                 }
                 
                 }
