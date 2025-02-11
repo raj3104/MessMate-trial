@@ -41,28 +41,35 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         userRef.getDocument { document, error in
             if let document = document, document.exists, let data = document.data() {
-                print("📌 Firestore User Data:", data)
-                
                 let name = data["name"] as? String ?? "User"
+                
                 if let details = data["details"] as? [String: Any],
                    let detail1 = details["detail_number_1"] as? [String: Any] {
                     self.userHostel = detail1["hostel"] as? String ?? ""
-                    self.userMess = detail1["mess"] as? String ?? ""
-                } else {
-                    print("❌ No 'details.detail_number_1' found in Firestore")
-                }
+                    self.userMess = detail1["mess"] as? String ?? "Mayuri" // Default to "Mayuri"
 
-                print("🏠 Hostel: \(self.userHostel), 🍽 Mess: \(self.userMess)")
+                    DispatchQueue.main.async {
+                        self.updateMessSelector()
+                    }
+                }
                 
                 self.animateGreet(username: name)
                 self.fetchMessDetails()
-            } else {
-                print("❌ Error fetching user document:", error?.localizedDescription ?? "Unknown error")
-                self.greetingLabel.text = "Hello!"
             }
         }
     }
-    
+
+    @IBOutlet weak var messSelector: UISegmentedControl!
+    func updateMessSelector() {
+        if userMess == "Mayuri" {
+            messSelector.selectedSegmentIndex = 0
+        } else if userMess == "Safal" {
+            messSelector.selectedSegmentIndex = 1
+        } else if userMess == "CRCL" {
+            messSelector.selectedSegmentIndex = 2
+        }
+    }
+
     func animateGreet(username: String) {
         let words = username.components(separatedBy: " ").map { word in
             return word.prefix(1).uppercased() + word.dropFirst()
@@ -147,7 +154,67 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         return cell
     }
-    
+    @IBAction func deleteButton(_ sender: UIBarButtonItem) {
+        let alert = UIAlertController(title: "Delete Account", message: "Are you sure you want to delete your account? This action cannot be undone.", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { _ in
+            self.deleteAccount()
+        }))
+        
+        present(alert, animated: true)
+    }
+
+    func deleteAccount() {
+        guard let user = Auth.auth().currentUser else { return }
+        let userRef = db.collection("users").document(user.uid)
+
+        userRef.delete { error in
+            if let error = error {
+                print("❌ Error deleting Firestore data: \(error.localizedDescription)")
+                return
+            }
+            print("✅ Firestore user data deleted successfully.")
+
+            user.delete { error in
+                if let error = error {
+                    print("❌ Error deleting Firebase Auth account: \(error.localizedDescription)")
+                } else {
+                    print("✅ User deleted successfully.")
+                    self.navigateToLogin()
+                }
+            }
+        }
+    }
+    @IBAction func messSelector(_ sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+        case 0:
+            userMess = "Mayuri"
+        case 1:
+            userMess = "Safal"
+        case 2:
+            userMess = "CRCL"
+        default:
+            return
+        }
+        fetchMessDetails() // Refresh mess menu after selection
+    }
+
+    @IBAction func logOutButton(_ sender: UIBarButtonItem) {
+        do {
+            try Auth.auth().signOut()
+            navigateToLogin()
+        } catch let signOutError as NSError {
+            print("❌ Error signing out: %@", signOutError)
+        }
+    }
+
+    func navigateToLogin() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let loginVC = storyboard.instantiateViewController(withIdentifier: "ViewController") as? ViewController {
+            self.navigationController?.pushViewController(loginVC, animated: true)
+        }
+    }
     @IBAction func mealButtonPressed(_ sender: UIButton) {
         let alert = UIAlertController(title: "Select a Meal", message: nil, preferredStyle: .actionSheet)
 

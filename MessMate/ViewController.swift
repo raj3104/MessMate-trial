@@ -41,6 +41,9 @@ class ViewController: UIViewController {
         })
     }
     
+    
+    
+    
     func animateDesigns() {
         let moveDistance = mainLogoView.bounds.height
         

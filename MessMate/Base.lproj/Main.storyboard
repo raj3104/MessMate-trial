@@ -850,6 +850,9 @@
                                                     <segment title="Safal"/>
                                                     <segment title="CRCL"/>
                                                 </segments>
+                                                <connections>
+                                                    <action selector="messSelector:" destination="xmH-x8-DBn" eventType="valueChanged" id="QWz-77-Ggh"/>
+                                                </connections>
                                             </segmentedControl>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pSA-Au-7aN">
                                                 <rect key="frame" x="120" y="274" width="200" height="35"/>
@@ -925,7 +928,11 @@
                     </view>
                     <navigationItem key="navigationItem" id="D8f-QY-s9Y">
                         <nil key="title"/>
-                        <barButtonItem key="leftBarButtonItem" systemItem="trash" id="N1J-Zw-Evn"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="trash" id="N1J-Zw-Evn">
+                            <connections>
+                                <action selector="deleteButton:" destination="xmH-x8-DBn" id="C83-eH-VDw"/>
+                            </connections>
+                        </barButtonItem>
                         <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="32b-ug-9SP">
                             <rect key="frame" x="154.66666666666666" y="5.6666666666666679" width="130.99999999999997" height="33"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -938,17 +945,17 @@
                             <color key="tintColor" red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <color key="selectedSegmentTintColor" red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </segmentedControl>
-                        <barButtonItem key="rightBarButtonItem" title="Item" style="plain" id="HdF-Zt-0bC">
-                            <switch key="customView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="QqI-I1-a0i">
-                                <rect key="frame" x="369" y="6.6666666666666679" width="51" height="31.000000000000004"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </switch>
+                        <barButtonItem key="rightBarButtonItem" title="Log out" id="Prq-Wo-hWf">
+                            <connections>
+                                <action selector="logOutButton:" destination="xmH-x8-DBn" id="WpG-VC-ctd"/>
+                            </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="greetingLabel" destination="b7j-Ay-V2D" id="IWq-OC-dgA"/>
                         <outlet property="mealButton" destination="pSA-Au-7aN" id="s3W-X7-jak"/>
                         <outlet property="mealImage" destination="j8C-zc-0jN" id="KdG-9c-OwK"/>
+                        <outlet property="messSelector" destination="Lc6-5P-aXZ" id="gkN-Uc-Ux5"/>
                         <outlet property="tableView" destination="kRd-7P-aST" id="tHe-Tn-exc"/>
                     </connections>
                 </viewController>
