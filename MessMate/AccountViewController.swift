@@ -5,17 +5,20 @@ import FirebaseAuth
 class AccountViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var greetingLabel: UILabel!
-    @IBOutlet weak var nextMealLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var mealImage: UIImageView!
+    @IBOutlet weak var mealButton: UIButton!
+    @IBOutlet weak var nextMealLabel: UILabel!
     
-    var messData: [String: [String]] = [:] // Mess name -> Meal items
+    var messData: [String: [String]] = [:]
     var userHostel: String = ""
     var userMess: String = ""
     let db = Firestore.firestore()
     let daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-
+    let options = ["Breakfast", "Lunch", "Snacks", "Dinner"]
+    
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         navigationItem.hidesBackButton = true
     }
 
@@ -24,17 +27,18 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         tableView.delegate = self
         tableView.dataSource = self
         
+        let defaultMeal = determineNextMeal()
+        mealButton.setTitle(defaultMeal, for: .normal)
         fetchUserDetails()
     }
 
-    /// Fetch user details (name, hostel, mess)
     func fetchUserDetails() {
         guard let user = Auth.auth().currentUser else { return }
         let userRef = db.collection("users").document(user.uid)
         
         userRef.getDocument { document, error in
             if let document = document, document.exists, let data = document.data() {
-                print("📌 Firestore User Data:", data) // Debugging
+                print("📌 Firestore User Data:", data)
                 
                 let name = data["name"] as? String ?? "User"
                 if let details = data["details"] as? [String: Any],
@@ -45,10 +49,9 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
                     print("❌ No 'details.detail_number_1' found in Firestore")
                 }
 
-                print("🏠 Hostel: \(self.userHostel), 🍽 Mess: \(self.userMess)") // Debugging
+                print("🏠 Hostel: \(self.userHostel), 🍽 Mess: \(self.userMess)")
                 
                 self.greetingLabel.text = "Hello, \(name)"
-                self.determineNextMeal()
                 self.fetchMessDetails()
             } else {
                 print("❌ Error fetching user document:", error?.localizedDescription ?? "Unknown error")
@@ -57,46 +60,40 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
 
-
-    /// Determine the next meal based on the current time
-    func determineNextMeal() {
+    func determineNextMeal() -> String {
         let hour = Calendar.current.component(.hour, from: Date())
-        let nextMeal: String
+        
         if hour < 9 {
-            nextMeal = "Breakfast"
+            return "Breakfast"
         } else if hour < 14 {
-            nextMeal = "Lunch"
+            return "Lunch"
         } else if hour < 18 {
-            nextMeal = "Snacks"
+            return "Snacks"
         } else {
-            nextMeal = "Dinner"
+            return "Dinner"
         }
-        nextMealLabel.text = nextMeal
     }
 
-    /// Fetch mess details based on user hostel and mess
     func fetchMessDetails() {
         guard !userMess.isEmpty, !userHostel.isEmpty else {
             print("❌ No valid hostel or mess information available")
             return
         }
 
-        let nextMeal = nextMealLabel.text ?? "Breakfast"
+        let selectedMeal = mealButton.title(for: .normal) ?? "Breakfast"
         let currentDayIndex = Calendar.current.component(.weekday, from: Date()) - 1
-        let currentDay = daysOfWeek[(currentDayIndex + 6) % 7] 
+        let currentDay = daysOfWeek[(currentDayIndex + 6) % 7]
         
         let messRef = db.collection("MessDetails").document(userHostel)
         
         messRef.getDocument { document, error in
             if let document = document, document.exists, let data = document.data() {
-                print("📌 Firestore Mess Data for \(self.userHostel):", data) // Debugging
+                print("📌 Firestore Mess Data for \(self.userHostel):", data)
 
                 if let messes = data[self.userMess] as? [String: Any],
                    let dayMeals = messes[currentDay] as? [String: Any],
-                   let items = dayMeals[nextMeal] as? [String] {  // 👈 Explicitly cast to [String]
-
-                    self.messData[self.userMess] = items  // ✅ Assign properly
-
+                   let items = dayMeals[selectedMeal] as? [String] {
+                    self.messData[self.userMess] = items
                     DispatchQueue.main.async {
                         self.tableView.reloadData()
                     }
@@ -110,11 +107,8 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
 
-
-    // MARK: - TableView Methods
-
     func numberOfSections(in tableView: UITableView) -> Int {
-        return messData.keys.count > 0 ? 1 : 0
+        return messData.isEmpty ? 0 : 1
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -124,12 +118,26 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ItemCell", for: indexPath)
         
-        if let meals = messData[userMess], meals.count > 0 {
+        if let meals = messData[userMess], !meals.isEmpty {
             cell.textLabel?.text = meals[indexPath.row]
         } else {
             cell.textLabel?.text = "No menu available"
         }
-
+        
         return cell
+    }
+    
+    @IBAction func mealButtonPressed(_ sender: Any) {
+        let alert = UIAlertController(title: "Select a Meal", message: nil, preferredStyle: .actionSheet)
+        
+        for option in options {
+            alert.addAction(UIAlertAction(title: option, style: .default, handler: { action in
+                self.mealButton.setTitle(option, for: .normal)
+                self.fetchMessDetails()
+            }))
+        }
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        present(alert, animated: true)
     }
 }

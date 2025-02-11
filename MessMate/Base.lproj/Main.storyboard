@@ -824,22 +824,12 @@
                                         <rect key="frame" x="0.0" y="0.0" width="440" height="408"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="|" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b7j-Ay-V2D">
-                                                <rect key="frame" x="45" y="8" width="350" height="125"/>
+                                                <rect key="frame" x="45" y="24" width="350" height="125"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="125" id="Ag5-eb-fOE"/>
                                                     <constraint firstAttribute="width" constant="350" id="Bye-6S-ydn"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="HoeflerText-Regular" family="Hoefler Text" pointSize="55"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Breakfast" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H8E-TG-hNM">
-                                                <rect key="frame" x="159.66666666666666" y="272" width="120.99999999999997" height="30"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="30" id="6zw-n6-eDV"/>
-                                                    <constraint firstAttribute="width" constant="121" id="8Qe-Rs-kbZ"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" name="HoeflerText-Regular" family="Hoefler Text" pointSize="30"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
@@ -850,24 +840,42 @@
                                                     <constraint firstAttribute="height" constant="100" id="hLo-C3-s0U"/>
                                                 </constraints>
                                             </imageView>
-                                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Lc6-5P-aXZ">
-                                                <rect key="frame" x="120" y="326" width="200" height="32"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Lc6-5P-aXZ">
+                                                <rect key="frame" x="95" y="326" width="250" height="32"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="250" id="7hZ-eq-dCU"/>
+                                                    <constraint firstAttribute="height" constant="31" id="x6t-IV-aeq"/>
+                                                </constraints>
                                                 <segments>
                                                     <segment title="Mayuri"/>
                                                     <segment title="Safal"/>
                                                     <segment title="CRCL"/>
                                                 </segments>
                                             </segmentedControl>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pSA-Au-7aN">
+                                                <rect key="frame" x="120" y="274" width="200" height="35"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="35" id="ddl-Qi-urY"/>
+                                                    <constraint firstAttribute="width" constant="200" id="y2k-FO-NzT"/>
+                                                </constraints>
+                                                <color key="tintColor" systemColor="labelColor"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="tinted" title="Button" cornerStyle="capsule"/>
+                                                <connections>
+                                                    <action selector="mealButtonPressed:" destination="xmH-x8-DBn" eventType="touchUpInside" id="VOt-aJ-Pv6"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
-                                            <constraint firstItem="j8C-zc-0jN" firstAttribute="top" secondItem="b7j-Ay-V2D" secondAttribute="bottom" constant="21" id="0Ui-8E-FbG"/>
+                                            <constraint firstItem="j8C-zc-0jN" firstAttribute="top" secondItem="b7j-Ay-V2D" secondAttribute="bottom" constant="5" id="0Ui-8E-FbG"/>
+                                            <constraint firstItem="pSA-Au-7aN" firstAttribute="centerX" secondItem="Ybw-5q-df4" secondAttribute="centerX" id="Yx3-2p-8vk"/>
                                             <constraint firstItem="j8C-zc-0jN" firstAttribute="centerY" secondItem="Ybw-5q-df4" secondAttribute="centerY" id="bx6-tJ-gco"/>
-                                            <constraint firstItem="H8E-TG-hNM" firstAttribute="centerX" secondItem="Ybw-5q-df4" secondAttribute="centerX" id="cS3-mu-8Ai"/>
                                             <constraint firstItem="j8C-zc-0jN" firstAttribute="centerX" secondItem="Ybw-5q-df4" secondAttribute="centerX" id="dH1-g4-42m"/>
+                                            <constraint firstItem="Lc6-5P-aXZ" firstAttribute="centerX" secondItem="Ybw-5q-df4" secondAttribute="centerX" id="kFD-KD-BZz"/>
+                                            <constraint firstItem="Lc6-5P-aXZ" firstAttribute="top" secondItem="pSA-Au-7aN" secondAttribute="bottom" constant="17" id="pFA-ix-Z8p"/>
                                             <constraint firstItem="b7j-Ay-V2D" firstAttribute="centerX" secondItem="Ybw-5q-df4" secondAttribute="centerX" id="tIf-LU-qtI"/>
-                                            <constraint firstItem="H8E-TG-hNM" firstAttribute="top" secondItem="j8C-zc-0jN" secondAttribute="bottom" constant="18" id="wtd-vp-r2L"/>
+                                            <constraint firstItem="pSA-Au-7aN" firstAttribute="top" secondItem="j8C-zc-0jN" secondAttribute="bottom" constant="20" id="yzm-Ut-fpa"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sn0-pU-qQt">
@@ -920,7 +928,7 @@
                         <nil key="title"/>
                         <barButtonItem key="leftBarButtonItem" systemItem="trash" id="N1J-Zw-Evn"/>
                         <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="32b-ug-9SP">
-                            <rect key="frame" x="0.0" y="0.0" width="0.0" height="33"/>
+                            <rect key="frame" x="154.66666666666666" y="5.6666666666666679" width="130.99999999999997" height="33"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <segments>
                                 <segment title="">
@@ -940,8 +948,8 @@
                     </navigationItem>
                     <connections>
                         <outlet property="greetingLabel" destination="b7j-Ay-V2D" id="IWq-OC-dgA"/>
+                        <outlet property="mealButton" destination="pSA-Au-7aN" id="s3W-X7-jak"/>
                         <outlet property="mealImage" destination="j8C-zc-0jN" id="KdG-9c-OwK"/>
-                        <outlet property="nextMealLabel" destination="H8E-TG-hNM" id="qk1-dW-Xfl"/>
                         <outlet property="tableView" destination="kRd-7P-aST" id="tHe-Tn-exc"/>
                     </connections>
                 </viewController>
@@ -982,16 +990,16 @@
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="secondarySystemBackgroundColor">
-            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray3Color">
-            <color red="0.78039215689999997" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.7803921568627451" green="0.7803921568627451" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
