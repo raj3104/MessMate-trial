@@ -11,6 +11,7 @@ import FirebaseCore
 import FirebaseAuth
 
 class LoginViewController: UIViewController {
+//let animatedButton = AnimatedButton(frame: CGRect(x: 100, y: 300, width: 200, height: 50))
     
     
     @IBOutlet weak var errorDescription: UILabel!
@@ -58,9 +59,11 @@ class LoginViewController: UIViewController {
             Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
               guard let strongSelf = self else { return }
                 if error == nil {
+                  
                     let storyboard=UIStoryboard(name: "Main", bundle: nil)
                     if let accountDetailsVC=storyboard.instantiateViewController(withIdentifier: "AccountViewController") as? AccountViewController{
                         self?.navigationController?.pushViewController(accountDetailsVC, animated: true)
+                    
                         
                     }
                 }
@@ -77,6 +80,7 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+      
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
            view.addGestureRecognizer(tapGesture)
         //self.navigationController?.setNavigationBarHidden(false, animated: false)
@@ -116,6 +120,8 @@ class LoginViewController: UIViewController {
         
         
     }
+    
+   
     
     func blurLoginandLoginImage(){
         UIView.animate(withDuration: 2.0, animations: {
