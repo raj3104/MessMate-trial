@@ -4,6 +4,8 @@ import FirebaseAuth
 
 class AccountViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    var userName=[String]()
+    
     @IBOutlet weak var greetingLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var mealImage: UIImageView!
@@ -29,6 +31,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         let defaultMeal = determineNextMeal()
         mealButton.setTitle(defaultMeal, for: .normal)
+        mealImage.image=UIImage(imageLiteralResourceName: defaultMeal)
         fetchUserDetails()
     }
 
@@ -51,11 +54,29 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
 
                 print("🏠 Hostel: \(self.userHostel), 🍽 Mess: \(self.userMess)")
                 
-                self.greetingLabel.text = "Hello, \(name)"
+                self.animateGreet(username: name)
                 self.fetchMessDetails()
             } else {
                 print("❌ Error fetching user document:", error?.localizedDescription ?? "Unknown error")
                 self.greetingLabel.text = "Hello!"
+            }
+        }
+    }
+    
+    func animateGreet(username: String) {
+        let words = username.components(separatedBy: " ").map { word in
+            return word.prefix(1).uppercased() + word.dropFirst()
+        }
+        
+        let fullGreeting = "Hello, " + words.joined(separator: " ")
+        greetingLabel.text = "" // Clear label before animation
+        var line="|"
+        
+        for (index, letter) in fullGreeting.enumerated() {
+            DispatchQueue.main.asyncAfter(deadline: .now() + (0.1 * Double(index))) {
+                self.greetingLabel.text?.append("\(letter)")
+                
+                
             }
         }
     }
@@ -127,17 +148,27 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         return cell
     }
     
-    @IBAction func mealButtonPressed(_ sender: Any) {
+    @IBAction func mealButtonPressed(_ sender: UIButton) {
         let alert = UIAlertController(title: "Select a Meal", message: nil, preferredStyle: .actionSheet)
-        
+
         for option in options {
             alert.addAction(UIAlertAction(title: option, style: .default, handler: { action in
                 self.mealButton.setTitle(option, for: .normal)
+                self.mealImage.image = UIImage(imageLiteralResourceName: option)
                 self.fetchMessDetails()
             }))
         }
-        
+
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+
+        // **Fix for iPad**
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.sourceView = sender
+            popoverController.sourceRect = sender.bounds
+            popoverController.permittedArrowDirections = .any
+        }
+
         present(alert, animated: true)
     }
+
 }
