@@ -11,123 +11,96 @@ import FirebaseCore
 import FirebaseAuth
 
 class LoginViewController: UIViewController {
-//let animatedButton = AnimatedButton(frame: CGRect(x: 100, y: 300, width: 200, height: 50))
     
-    
-    @IBOutlet weak var errorDescription: UILabel!
-    
-    @IBOutlet weak var passwordtext: UITextField!
-    @IBAction func loginButtonPressed(_ sender: UIButton) {
-       
-        if let email=emailText.text, let password=passwordtext.text{
-            errorDescription.text=""
-            Auth.auth().signIn(withEmail: email, password: password){
-                authResult, error in
-                if let e=error{
-                    print(e.localizedDescription)
-                    self.errorDescription.text=e.localizedDescription
-                    
-                }
-                else{
-                    let storyboard=UIStoryboard(name: "Main", bundle: nil)
-                    if let accountDetailsVC=storyboard.instantiateViewController(withIdentifier: "AccountViewController") as? AccountViewController{
-                        self.navigationController?.pushViewController(accountDetailsVC, animated: true)
-                        
-                    }
-
-                }
-                
-                }
-        }else{
-            errorDescription.text="Please enter all fields"
-        }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        loadingCircle.isHidden = true  // Ensure it's hidden initially
     }
-    
-    
-    
-    @IBOutlet weak var loginButton: UIButton!
-    @IBOutlet weak var loginText: UILabel!
-    var login=["L","o","g","i","n"]
-    
-    @IBOutlet weak var loginTrailing: NSLayoutConstraint!
-    @IBOutlet weak var imageLeading: NSLayoutConstraint!
-    @IBOutlet weak var loginImage: UIImageView!
+
+    @IBOutlet weak var errorDescription: UILabel!
+    @IBOutlet weak var passwordtext: UITextField!
     @IBOutlet weak var emailText: UITextField!
-    
+    @IBOutlet weak var loginButtonReal: UIButton!
+    @IBOutlet weak var loadingCircle: UIActivityIndicatorView!
+
+    @IBOutlet weak var loginText: UILabel!
+    @IBOutlet weak var loginImage: UIImageView!
+    @IBOutlet weak var imageLeading: NSLayoutConstraint!  // ✅ Kept untouched
+    @IBOutlet weak var loginTrailing: NSLayoutConstraint! // ✅ Kept untouched
+
+    var login = ["L", "o", "g", "i", "n"]
+
     @IBAction func realLogin(_ sender: UIButton) {
-        if let email=emailText.text, let password=passwordtext.text {
-            Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
-              guard let strongSelf = self else { return }
-                if error == nil {
-                  
-                    let storyboard=UIStoryboard(name: "Main", bundle: nil)
-                    if let accountDetailsVC=storyboard.instantiateViewController(withIdentifier: "AccountViewController") as? AccountViewController{
-                        self?.navigationController?.pushViewController(accountDetailsVC, animated: true)
-                    
-                        
+        // Start loading animation and disable login button
+        loadingCircle.isHidden = false
+        loadingCircle.startAnimating()
+        loginButtonReal.isEnabled = false
+        
+        guard let email = emailText.text, let password = passwordtext.text, !email.isEmpty, !password.isEmpty else {
+            errorDescription.text = "Please enter all fields"
+            stopLoading()
+            return
+        }
+
+        Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
+            guard let strongSelf = self else { return }
+
+            DispatchQueue.main.async {
+                if let error = error {
+                    // Login failed, show error and re-enable button
+                    strongSelf.errorDescription.text = error.localizedDescription
+                    strongSelf.stopLoading()
+                } else {
+                    // Login successful, transition to AccountViewController
+                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                    if let accountDetailsVC = storyboard.instantiateViewController(withIdentifier: "AccountViewController") as? AccountViewController {
+                        strongSelf.stopLoading()
+                        strongSelf.navigationController?.pushViewController(accountDetailsVC, animated: true)
                     }
-                }
-                else{
-                    self?.errorDescription.text=error?.localizedDescription
                 }
             }
         }
-        
-       
     }
-    
-    @IBOutlet weak var loginButtonReal: UIButton!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-      
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-           view.addGestureRecognizer(tapGesture)
-        //self.navigationController?.setNavigationBarHidden(false, animated: false)
         
-        //passwordtext.isHidden=true
-//        loginButton.setTitle("Send OTP", for: .normal)
-        //loginButtonReal.isHidden=true
-        loginText.text=""
-        loginText.alpha=0.1
-       
-        loginImage.alpha=0.1
-        imageLeading.constant = -100
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapGesture)
+
+        // Kept all existing animations and constraints intact
+        loadingCircle.isHidden = true
+        loginText.text = ""
+        loginText.alpha = 0.1
+        loginImage.alpha = 0.1
+        imageLeading.constant = -100  // ✅ Kept untouched
         animateLogin()
         blurLoginandLoginImage()
-        
-        
-        
-        
     }
-    
+
     @objc func dismissKeyboard() {
         view.endEditing(true)  // Dismisses the keyboard
     }
     
-    
-    
-    
-    func animateLogin(){
+    private func stopLoading() {
+        loadingCircle.stopAnimating()
+        loadingCircle.isHidden = true
+        loginButtonReal.isEnabled = true
+    }
+
+    func animateLogin() {
         for i in 0..<login.count {
             DispatchQueue.main.asyncAfter(deadline: .now() + Double(i) * 0.3) {
                 self.loginText.text! += self.login[i]
             }
         }
-        
-        
-        
-        
-        
     }
-    
-   
-    
-    func blurLoginandLoginImage(){
+
+    func blurLoginandLoginImage() {
         UIView.animate(withDuration: 2.0, animations: {
-            self.loginText.alpha=1.0
-            self.imageLeading.constant = 0
-            self.loginImage.alpha=1.0
+            self.loginText.alpha = 1.0
+            self.imageLeading.constant = 0  // ✅ Kept untouched
+            self.loginImage.alpha = 1.0
         })
     }
 }

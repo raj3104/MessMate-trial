@@ -4,6 +4,8 @@ import FirebaseAuth
 
 class AccountViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    
+    
     var userName=[String]()
     
     @IBOutlet weak var greetingLabel: UILabel!
@@ -22,6 +24,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         navigationItem.hidesBackButton = true
+        
     }
 
     override func viewDidLoad() {

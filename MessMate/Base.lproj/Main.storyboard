@@ -771,11 +771,21 @@
                                                     <action selector="loginButtonPressed:" destination="vO4-mz-laW" eventType="touchUpInside" id="g9G-u0-lYd"/>
                                                 </connections>
                                             </button>
+                                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="wzB-UJ-HO6">
+                                                <rect key="frame" x="170" y="154" width="100" height="100"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="100" id="C9F-l0-cUc"/>
+                                                    <constraint firstAttribute="height" constant="100" id="b0S-Yh-EeS"/>
+                                                </constraints>
+                                                <color key="color" systemColor="systemBackgroundColor"/>
+                                            </activityIndicatorView>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="EbK-0I-rCO" firstAttribute="centerX" secondItem="eEb-pX-oED" secondAttribute="centerX" id="0UV-LF-dAT"/>
+                                            <constraint firstItem="wzB-UJ-HO6" firstAttribute="centerY" secondItem="eEb-pX-oED" secondAttribute="centerY" id="EXg-yy-e9i"/>
                                             <constraint firstItem="EbK-0I-rCO" firstAttribute="centerY" secondItem="eEb-pX-oED" secondAttribute="centerY" id="GNT-cf-cYL"/>
+                                            <constraint firstItem="wzB-UJ-HO6" firstAttribute="centerX" secondItem="eEb-pX-oED" secondAttribute="centerX" id="qWe-6I-Rck"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -795,6 +805,7 @@
                         <outlet property="emailText" destination="wwn-eE-DM2" id="JF3-RV-9dJ"/>
                         <outlet property="errorDescription" destination="9OW-iW-jbx" id="wYB-7x-0MT"/>
                         <outlet property="imageLeading" destination="Mm7-Xa-CAo" id="ToQ-hN-hg3"/>
+                        <outlet property="loadingCircle" destination="wzB-UJ-HO6" id="VLp-zG-zNH"/>
                         <outlet property="loginButtonReal" destination="EbK-0I-rCO" id="gEF-oD-mw8"/>
                         <outlet property="loginImage" destination="guE-Ue-xiz" id="SOl-Ii-eWc"/>
                         <outlet property="loginText" destination="Bcu-CC-lIB" id="en9-1p-COV"/>
