@@ -12,12 +12,14 @@ class RegisterViewController: UIViewController {
     @IBOutlet weak var passwordText: UITextField!
     @IBOutlet weak var emailText: UITextField!
     @IBOutlet weak var confirmPassword: UITextField!
+    @IBOutlet weak var registerLoader: UIActivityIndicatorView!
     
     var register = ["R", "e", "g", "i", "s", "t", "e", "r"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
         registerButtoninfo.isEnabled = true
+        registerLoader.isHidden = true // Hide loader initially
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
@@ -31,6 +33,11 @@ class RegisterViewController: UIViewController {
         blurRegisterandRegisterImage()
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        registerButtoninfo.isEnabled = true // Enable button when the view disappears
+    }
+
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }
@@ -42,8 +49,6 @@ class RegisterViewController: UIViewController {
     }
 
     @IBAction func registerButton(_ sender: UIButton) {
-        
-        
         guard let email = emailText.text, let password = passwordText.text, let confirmPassword = confirmPassword.text else {
             errorDescription.text = "Please enter all fields"
             return
@@ -55,35 +60,37 @@ class RegisterViewController: UIViewController {
         }
         
         errorDescription.text = ""
+        registerLoader.isHidden = false
+        registerLoader.startAnimating() // Start loader
+        registerButtoninfo.isEnabled = false // Disable register button
 
         Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
             if let e = error {
                 print("❌ Registration Error:", e.localizedDescription)
                 self.errorDescription.text = e.localizedDescription
+                self.registerLoader.stopAnimating()
+                self.registerLoader.isHidden = true
+                self.registerButtoninfo.isEnabled = true // Re-enable if there's an error
                 return
             }
             
             guard let user = authResult?.user else { return }
 
-            // ✅ Send Email Verification
             user.sendEmailVerification { error in
                 if let error = error {
                     print("❌ Error sending verification email:", error.localizedDescription)
+                    self.registerLoader.stopAnimating()
+                    self.registerLoader.isHidden = true
+                    self.registerButtoninfo.isEnabled = true // Re-enable if there's an error
                     return
                 }
+                
                 print("📩 Verification email sent!")
-                self.registerButtoninfo.isEnabled = false
-                UIView.animate(withDuration: 2.0, animations: {
-                    self.registerButtoninfo.isEnabled=true
-                })
-
-                // ✅ Show Alert to Inform User
                 self.showEmailVerificationAlert(user: user)
             }
         }
     }
 
-    // ✅ Function to Show Alert After Email is Sent
     func showEmailVerificationAlert(user: FirebaseAuth.User) {
         let alert = UIAlertController(
             title: "Verify Your Email",
@@ -102,7 +109,6 @@ class RegisterViewController: UIViewController {
         present(alert, animated: true)
     }
 
-    // ✅ Function to Resend Email Verification
     func resendVerificationEmail(user: FirebaseAuth.User) {
         user.sendEmailVerification { error in
             if let error = error {
@@ -113,10 +119,12 @@ class RegisterViewController: UIViewController {
         }
     }
 
-    // ✅ Function to Wait for User to Verify Email
     func waitForEmailVerification(user: FirebaseAuth.User) {
-        let checkInterval = 5.0 // Check every 5 seconds
-        
+        registerLoader.isHidden = false
+        registerLoader.startAnimating() // Start loader while waiting for verification
+        registerButtoninfo.isEnabled = false // Keep button disabled until verified
+
+        let checkInterval = 5.0
         Timer.scheduledTimer(withTimeInterval: checkInterval, repeats: true) { timer in
             user.reload { error in
                 if let error = error {
@@ -126,10 +134,27 @@ class RegisterViewController: UIViewController {
                 
                 if user.isEmailVerified {
                     print("✅ Email is verified!")
-                    timer.invalidate() // Stop checking
+                    timer.invalidate()
                     
-                    // ✅ Navigate to User Details Screen
-                    self.navigateToUserDetails(userId: user.uid)
+                    // Sign in the user again to complete the process
+                    Auth.auth().signIn(withEmail: user.email!, password: self.passwordText.text!) { authResult, error in
+                        if let error = error {
+                            print("❌ Error signing in after verification:", error.localizedDescription)
+                            self.errorDescription.text = "Error logging in: \(error.localizedDescription)"
+                            self.registerLoader.stopAnimating()
+                            self.registerLoader.isHidden = true
+                            self.registerButtoninfo.isEnabled = true // Enable button in case of error
+                            return
+                        }
+
+                        // Stop loader and navigate to details screen
+                        DispatchQueue.main.async {
+                            self.registerLoader.stopAnimating()
+                            self.registerLoader.isHidden = true
+                        }
+                        
+                        self.navigateToUserDetails(userId: user.uid)
+                    }
                 } else {
                     print("⚠️ Email not verified yet. Retrying...")
                 }
@@ -137,7 +162,6 @@ class RegisterViewController: UIViewController {
         }
     }
 
-    // ✅ Function to Navigate After Verification
     func navigateToUserDetails(userId: String) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         

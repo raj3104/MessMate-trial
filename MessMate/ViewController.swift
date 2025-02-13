@@ -13,6 +13,9 @@ class ViewController: UIViewController {
         animateLoader()
         animateDesigns()
     }
+    override func viewDidAppear(_ animated: Bool) {
+        navigationItem.hidesBackButton = true
+    }
 
     @IBOutlet weak var mainLogoView: UIView!
     @IBOutlet weak var leftDesignBottom: NSLayoutConstraint!

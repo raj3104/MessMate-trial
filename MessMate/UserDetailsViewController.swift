@@ -16,112 +16,143 @@ class UserDetailsViewController: UIViewController {
     @IBOutlet weak var mayuriButton: UIButton!
     
     @IBOutlet weak var doneButton: UIButton!
+    @IBOutlet weak var loaderUserDetails: UIActivityIndicatorView!
 
     // Variables to track selections
     var selectedHostel: String?
     var selectedMess: String?
-    override func viewDidAppear(_ animated: Bool) {
-        navigationItem.hidesBackButton = true
-    }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        // Disable the Done button initially
+        doneButton.isEnabled = false
+        doneButton.alpha = 0.5
         
-        girlsHostelButton.addTarget(self, action: #selector(hostelSelected(_:)), for: .touchUpInside)
-        boysHostelButton.addTarget(self, action: #selector(hostelSelected(_:)), for: .touchUpInside)
-        crclButton.addTarget(self, action: #selector(messSelected(_:)), for: .touchUpInside)
-        safalButton.addTarget(self, action: #selector(messSelected(_:)), for: .touchUpInside)
-        mayuriButton.addTarget(self, action: #selector(messSelected(_:)), for: .touchUpInside)
-        
-        userName.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
-        
-        doneButton.isEnabled = true  // ✅ Always enabled
-        doneButton.alpha = 1.0
-        
+        // Hide the loader initially
+        loaderUserDetails.isHidden = true
+
+        // Setup gesture to dismiss the keyboard
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-                view.addGestureRecognizer(tapGesture)
+        view.addGestureRecognizer(tapGesture)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationItem.hidesBackButton = true
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        doneButton.isEnabled = true  // Enable button when leaving
+        doneButton.alpha = 1.0
+    }
+
+    // MARK: - Keyboard Handling
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 
     // MARK: - Hostel Selection
-    @objc func hostelSelected(_ sender: UIButton) {
+    @IBAction func hostelButtonSelected(_ sender: UIButton) {
         selectedHostel = sender.currentTitle
-        
+
         // Visually indicate selection
         girlsHostelButton.alpha = sender == girlsHostelButton ? 1.0 : 0.4
         boysHostelButton.alpha = sender == boysHostelButton ? 1.0 : 0.4
-    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        doneButton.sendActions(for: .touchUpInside) // Simulates button press
-           textField.resignFirstResponder() // Hide keyboard
-           return true
-       }
-    @objc func dismissKeyboard() {
-            view.endEditing(true)
-        }
-    @IBAction func hostelButtonSelected(_ sender: UIButton) {
-        selectedHostel=sender.currentTitle
-    }
-    
-    @IBAction func messButtonSelected(_ sender: UIButton){
-        selectedMess=sender.currentTitle
-        
+
+        validateForm()
     }
 
-    @objc func messSelected(_ sender: UIButton) {
+    // MARK: - Mess Selection
+    @IBAction func messButtonSelected(_ sender: UIButton) {
         selectedMess = sender.currentTitle
-        
+
         // Visually indicate selection
         crclButton.alpha = sender == crclButton ? 1.0 : 0.5
         safalButton.alpha = sender == safalButton ? 1.0 : 0.5
         mayuriButton.alpha = sender == mayuriButton ? 1.0 : 0.5
+
+        validateForm()
     }
-    
-    @objc func textFieldChanged() {
-        // No need to disable the button anymore
+
+    // MARK: - Text Field Change
+    @IBAction func textFieldChanged(_ sender: UITextField) {
+        validateForm()
+    }
+
+    // MARK: - Validate Form & Enable Done Button
+    func validateForm() {
+        if let name = userName.text, !name.isEmpty, selectedHostel != nil, selectedMess != nil {
+            doneButton.isEnabled = true
+            doneButton.alpha = 1.0
+        } else {
+            doneButton.isEnabled = false
+            doneButton.alpha = 0.5
+        }
     }
 
     // MARK: - Save User Details
     @IBAction func doneButtonPressed(_ sender: UIButton) {
-        if userId == nil {
+        guard let userId = userId else {
             print("❌ Error: userId is nil")
             return
         }
 
-        if userName.text?.isEmpty ?? true {
+        guard let name = userName.text, !name.isEmpty else {
             print("❌ Error: Name field is empty")
+            return
         }
 
-        if selectedHostel == nil {
+        guard let hostel = selectedHostel else {
             print("❌ Error: No hostel selected")
+            return
         }
 
-        if selectedMess == nil {
+        guard let mess = selectedMess else {
             print("❌ Error: No mess selected")
+            return
         }
+
+        // Disable the button and show loader
+        doneButton.isEnabled = false
+        doneButton.alpha = 0.5
+        loaderUserDetails.isHidden = false
+        loaderUserDetails.startAnimating()
 
         let db = Firestore.firestore()
-        let userRef = db.collection("users").document(userId!)
+        let userRef = db.collection("users").document(userId)
 
         let userDetails: [String: Any] = [
-            "name": userName.text ?? "Unknown",
+            "name": name,
             "details": [
-                "detail_number_1": ["hostel": selectedHostel ?? "Not Selected", "mess": selectedMess ?? "Not Selected"]
+                "detail_number_1": ["hostel": hostel, "mess": mess]
             ]
         ]
 
         userRef.setData(userDetails) { error in
+            DispatchQueue.main.async {
+                self.loaderUserDetails.stopAnimating()
+                self.loaderUserDetails.isHidden = true
+                self.doneButton.isEnabled = true
+                self.doneButton.alpha = 1.0
+            }
+
             if let error = error {
                 print("❌ Error saving details: \(error.localizedDescription)")
             } else {
                 print("✅ User details saved successfully!")
-                //self.navigationController?.popViewController(animated: true)
+
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                if let userDetailsVC = storyboard.instantiateViewController(withIdentifier: "AccountViewController") as? AccountViewController {
-                    //userDetailsVC.userId = self.userId
-                    self.navigationController?.pushViewController(userDetailsVC, animated: true)
+                if let accountVC = storyboard.instantiateViewController(withIdentifier: "AccountViewController") as? AccountViewController {
+                    self.navigationController?.pushViewController(accountVC, animated: true)
                 } else {
-                    print("❌ Error: UserDetailsViewController not found in storyboard")
+                    print("❌ Error: AccountViewController not found in storyboard")
                 }
             }
         }

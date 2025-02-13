@@ -80,7 +80,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         let fullGreeting = "Hello, " + words.joined(separator: " ")
         greetingLabel.text = "" // Clear label before animation
-        var line="|"
+        
         
         for (index, letter) in fullGreeting.enumerated() {
             DispatchQueue.main.asyncAfter(deadline: .now() + (0.1 * Double(index))) {
