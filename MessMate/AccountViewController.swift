@@ -27,35 +27,61 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         
     }
 
+    @IBOutlet weak var hostelSelectorInfo: UISegmentedControl!
     override func viewDidLoad() {
         super.viewDidLoad()
+
         tableView.delegate = self
         tableView.dataSource = self
-        
+
         let defaultMeal = determineNextMeal()
         mealButton.setTitle(defaultMeal, for: .normal)
-        mealImage.image=UIImage(imageLiteralResourceName: defaultMeal)
-        fetchUserDetails()
+        mealImage.image = UIImage(imageLiteralResourceName: defaultMeal)
+
+        fetchUserDetails() // ✅ Get user details
     }
 
     func fetchUserDetails() {
         guard let user = Auth.auth().currentUser else { return }
         let userRef = db.collection("users").document(user.uid)
-        
+
         userRef.getDocument { document, error in
             if let document = document, document.exists, let data = document.data() {
                 let name = data["name"] as? String ?? "User"
-                
+
                 if let details = data["details"] as? [String: Any],
                    let detail1 = details["detail_number_1"] as? [String: Any] {
                     self.userHostel = detail1["hostel"] as? String ?? ""
-                    self.userMess = detail1["mess"] as? String ?? "Mayuri" // Default to "Mayuri"
+                    self.userMess = detail1["mess"] as? String ?? "Mayuri"
 
                     DispatchQueue.main.async {
-                        self.updateMessSelector()
+                        if self.userHostel == "Girls Hostel" {
+                            self.hostelSelectorInfo.selectedSegmentIndex = 1
+                            self.hostelSelectorInfo.selectedSegmentTintColor = UIColor.systemPink
+
+                            // ✅ Rename CRCL → AB Catering & Hide Safal
+                            self.messSelector.setTitle("AB Catering", forSegmentAt: 2)
+                            self.messSelector.setEnabled(false, forSegmentAt: 1)
+
+                            // ✅ If stored mess is AB Catering, select it by default
+                            if self.userMess == "AB Catering" {
+                                self.messSelector.selectedSegmentIndex = 2
+                            } else {
+                                self.messSelector.selectedSegmentIndex = 0 // Default to Mayuri
+                            }
+
+                        } else {
+                            self.hostelSelectorInfo.selectedSegmentIndex = 0
+                            self.hostelSelectorInfo.selectedSegmentTintColor = UIColor.systemBlue
+                            self.messSelector.setTitle("CRCL", forSegmentAt: 2)
+                            self.messSelector.setEnabled(true, forSegmentAt: 1)
+                           
+                        }
+
+                        self.updateMessSelector() // ✅ Ensure selector is refreshed
                     }
                 }
-                
+
                 self.animateGreet(username: name)
                 self.fetchMessDetails()
             }
@@ -68,10 +94,12 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
             messSelector.selectedSegmentIndex = 0
         } else if userMess == "Safal" {
             messSelector.selectedSegmentIndex = 1
-        } else if userMess == "CRCL" {
+        } else if userMess == "CRCL" || userMess == "AB Catering" { // ✅ Handle both cases
             messSelector.selectedSegmentIndex = 2
+            messSelector.setTitle("AB Catering", forSegmentAt: 2) // Ensure name is updated
         }
     }
+
 
     func animateGreet(username: String) {
         let words = username.components(separatedBy: " ").map { word in
@@ -104,7 +132,6 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
             return "Dinner"
         }
     }
-
     func fetchMessDetails() {
         guard !userMess.isEmpty, !userHostel.isEmpty else {
             print("❌ No valid hostel or mess information available")
@@ -114,9 +141,10 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         let selectedMeal = mealButton.title(for: .normal) ?? "Breakfast"
         let currentDayIndex = Calendar.current.component(.weekday, from: Date()) - 1
         let currentDay = daysOfWeek[(currentDayIndex + 6) % 7]
-        
+
+        // ✅ Fetch data from the correct hostel (Boys or Girls)
         let messRef = db.collection("MessDetails").document(userHostel)
-        
+
         messRef.getDocument { document, error in
             if let document = document, document.exists, let data = document.data() {
                 print("📌 Firestore Mess Data for \(self.userHostel):", data)
@@ -137,6 +165,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
         }
     }
+
 
     func numberOfSections(in tableView: UITableView) -> Int {
         return messData.isEmpty ? 0 : 1
@@ -167,7 +196,41 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         present(alert, animated: true)
     }
+    
+    
+    
+    
+    @IBAction func hostelSelector(_ sender: UISegmentedControl) {
+        if sender.selectedSegmentIndex == 0 { // Boys Hostel Selected
+            userHostel = "Boys Hostel"
+            hostelSelectorInfo.selectedSegmentTintColor = UIColor.systemBlue
 
+            // Reset Mess Selector to show CRCL and Safal
+            messSelector.setTitle("CRCL", forSegmentAt: 2)
+            messSelector.setEnabled(true, forSegmentAt: 1)
+
+            // Default Mess for Boys
+            userMess = "Mayuri"
+            messSelector.selectedSegmentIndex = 0
+
+        } else { // Girls Hostel Selected
+            userHostel = "Girls Hostel"
+            hostelSelectorInfo.selectedSegmentTintColor = UIColor.systemPink
+
+            // Rename CRCL → AB Catering & Hide Safal
+            messSelector.setTitle("AB Catering", forSegmentAt: 2)
+            messSelector.setEnabled(false, forSegmentAt: 1) // Disable Safal
+
+            // Default Mess for Girls
+            userMess = "AB Catering"
+            messSelector.selectedSegmentIndex = 2
+        }
+
+        // ✅ Fetch new data from Firestore for the selected hostel
+        fetchMessDetails()
+    }
+
+    
     func deleteAccount() {
         guard let user = Auth.auth().currentUser else { return }
         let userRef = db.collection("users").document(user.uid)

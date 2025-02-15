@@ -59,24 +59,56 @@ class UserDetailsViewController: UIViewController {
     }
 
     // MARK: - Hostel Selection
+    // MARK: - Hostel Selection
     @IBAction func hostelButtonSelected(_ sender: UIButton) {
         selectedHostel = sender.currentTitle
 
-        // Visually indicate selection
+        if selectedHostel == "Girls Hostel" {
+            crclButton.setTitle("AB Catering", for: .normal) // Rename CRCL
+            crclButton.isEnabled = true
+            crclButton.alpha = 1.0
+
+            safalButton.isEnabled = false
+            safalButton.isHidden=true
+            safalButton.alpha = 0.3
+
+            mayuriButton.isEnabled = true  // ✅ Ensure Mayuri is enabled
+            mayuriButton.alpha = 1.0       // ✅ Make sure it's fully visible
+        } else { // Boys Hostel selected
+            crclButton.setTitle("CRCL", for: .normal) // Reset name
+            crclButton.isEnabled = true
+            crclButton.alpha = 1.0
+
+            safalButton.isEnabled = true
+            safalButton.isHidden=false
+            safalButton.alpha = 1.0
+
+            mayuriButton.isEnabled = true  // ✅ Ensure Mayuri is enabled
+            mayuriButton.alpha = 1.0       // ✅ Make sure it's fully visible
+        }
+
+        // Visually indicate hostel selection
         girlsHostelButton.alpha = sender == girlsHostelButton ? 1.0 : 0.4
         boysHostelButton.alpha = sender == boysHostelButton ? 1.0 : 0.4
 
         validateForm()
     }
 
+
     // MARK: - Mess Selection
     @IBAction func messButtonSelected(_ sender: UIButton) {
+        // Prevent selection of disabled buttons
+        if !sender.isEnabled { return }
+        
         selectedMess = sender.currentTitle
 
-        // Visually indicate selection
-        crclButton.alpha = sender == crclButton ? 1.0 : 0.5
-        safalButton.alpha = sender == safalButton ? 1.0 : 0.5
-        mayuriButton.alpha = sender == mayuriButton ? 1.0 : 0.5
+        // Reset all buttons to default transparency
+        crclButton.alpha = 0.5
+        safalButton.alpha = 0.5
+        mayuriButton.alpha = 0.5
+
+        // Highlight the selected mess button
+        sender.alpha = 1.0
 
         validateForm()
     }
