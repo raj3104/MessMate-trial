@@ -37,6 +37,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         let defaultMeal = determineNextMeal()
         mealButton.setTitle(defaultMeal, for: .normal)
         mealImage.image = UIImage(imageLiteralResourceName: defaultMeal)
+        resetButton(weekButton)
 
         fetchUserDetails() // ✅ Get user details
     }
@@ -94,11 +95,13 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
             messSelector.selectedSegmentIndex = 0
         } else if userMess == "Safal" {
             messSelector.selectedSegmentIndex = 1
-        } else if userMess == "CRCL" || userMess == "AB Catering" { // ✅ Handle both cases
+        } else if userMess == "CRCL" {
             messSelector.selectedSegmentIndex = 2
-            messSelector.setTitle("AB Catering", forSegmentAt: 2) // Ensure name is updated
+        } else if userMess == "JMB" {  // ✅ Handle JMB Selection
+            messSelector.selectedSegmentIndex = 3
         }
     }
+
 
 
     func animateGreet(username: String) {
@@ -132,17 +135,15 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
             return "Dinner"
         }
     }
-    func fetchMessDetails() {
+    func fetchMessDetails(for selectedDay: String? = nil) {
         guard !userMess.isEmpty, !userHostel.isEmpty else {
             print("❌ No valid hostel or mess information available")
             return
         }
 
         let selectedMeal = mealButton.title(for: .normal) ?? "Breakfast"
-        let currentDayIndex = Calendar.current.component(.weekday, from: Date()) - 1
-        let currentDay = daysOfWeek[(currentDayIndex + 6) % 7]
+        let currentDay = selectedDay ?? daysOfWeek[(Calendar.current.component(.weekday, from: Date()) - 1 + 6) % 7]
 
-        // ✅ Fetch data from the correct hostel (Boys or Girls)
         let messRef = db.collection("MessDetails").document(userHostel)
 
         messRef.getDocument { document, error in
@@ -197,17 +198,97 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         present(alert, animated: true)
     }
     
+    @IBOutlet weak var weekButton: UIButton!
     
     
+    @IBAction func weekButtonHandler(_ sender: Any) {
+        let alert = UIAlertController(title: "Select a Day", message: nil, preferredStyle: .actionSheet)
+
+        for day in daysOfWeek {
+               alert.addAction(UIAlertAction(title: day, style: .default, handler: { action in
+                   var selectedDay = day
+                   self.weekButton.setTitle(String(selectedDay.prefix(3)), for: .normal)
+                   
+                   let shortDay = String(day.prefix(3)) // Extract first 3 letters
+                   self.fetchMessDetails(for: selectedDay)
+               }))
+           }
+
+           alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+
+           // **Fix for iPad**
+           if let popoverController = alert.popoverPresentationController {
+               popoverController.sourceView = sender as? UIView
+               popoverController.sourceRect = (sender as AnyObject).bounds
+               popoverController.permittedArrowDirections = .any
+           }
+
+           present(alert, animated: true)
+    }
+    
+    
+    func sfCode(for day:String=""){
+        var currentMeal=determineNextMeal()
+        if(day != ""){
+            if(day=="Breakfast"){
+                mealImage.image=UIImage(systemName: "sunrise.fill")
+            }
+            else if(day=="Lunch"){
+                mealImage.image=UIImage(systemName: "sun.max")
+            }
+            else if(day=="Snacks"){
+                mealImage.image=UIImage(systemName: "sunset.fill")
+            }
+            else{
+                mealImage.image=UIImage(systemName: "moon.fill")
+            }
+            
+        }
+        else{
+            if(currentMeal=="Breakfast"){
+                mealImage.image=UIImage(systemName: "sunrise.fill")
+            }
+            else if(currentMeal=="Lunch"){
+                mealImage.image=UIImage(systemName: "sun.max")
+            }
+            else if(currentMeal=="Snacks"){
+                mealImage.image=UIImage(systemName: "sunset.fill")
+            }
+            else{
+                mealImage.image=UIImage(systemName: "moon.fill")
+            }
+            
+        }
+       
+        
+        
+    }
+    
+    
+    
+    @IBAction func resetButton(_ sender: UIButton) {
+        let todayIndex = Calendar.current.component(.weekday, from: Date()) - 1
+           let today = daysOfWeek[(todayIndex + 6) % 7] // Ensure Sunday = 6, Monday = 0
+           let defaultMeal = determineNextMeal() // Get the next meal
+
+        weekButton.setTitle(String(today.prefix(3)), for: .normal) // Reset week button
+           mealButton.setTitle(defaultMeal, for: .normal) // Reset meal button
+        sfCode()
+
+           fetchMessDetails(for: today) // Load data for today
+    }
     
     @IBAction func hostelSelector(_ sender: UISegmentedControl) {
         if sender.selectedSegmentIndex == 0 { // Boys Hostel Selected
             userHostel = "Boys Hostel"
             hostelSelectorInfo.selectedSegmentTintColor = UIColor.systemBlue
 
-            // Reset Mess Selector to show CRCL and Safal
+            // ✅ Update Mess Selector for Boys Hostel
             messSelector.setTitle("CRCL", forSegmentAt: 2)
+            messSelector.setTitle("JMB", forSegmentAt: 3)  // ✅ JMB Added
+            messSelector.setTitle("Safal", forSegmentAt: 1)
             messSelector.setEnabled(true, forSegmentAt: 1)
+            messSelector.setEnabled(true, forSegmentAt: 3)
 
             // Default Mess for Boys
             userMess = "Mayuri"
@@ -217,9 +298,12 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
             userHostel = "Girls Hostel"
             hostelSelectorInfo.selectedSegmentTintColor = UIColor.systemPink
 
-            // Rename CRCL → AB Catering & Hide Safal
+            // ✅ Rename CRCL → AB Catering & Hide JMB & Safal
             messSelector.setTitle("AB Catering", forSegmentAt: 2)
-            messSelector.setEnabled(false, forSegmentAt: 1) // Disable Safal
+            messSelector.setEnabled(false, forSegmentAt: 1)
+            messSelector.setTitle("", forSegmentAt: 1)
+            messSelector.setEnabled(false, forSegmentAt: 3)
+            messSelector.setTitle("", forSegmentAt: 3)  // Hide JMB
 
             // Default Mess for Girls
             userMess = "AB Catering"
@@ -229,6 +313,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         // ✅ Fetch new data from Firestore for the selected hostel
         fetchMessDetails()
     }
+
 
     
     func deleteAccount() {
@@ -260,11 +345,14 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
             userMess = "Safal"
         case 2:
             userMess = "CRCL"
+        case 3:
+            userMess = "JMB"  // ✅ Added JMB as Segment 3
         default:
             return
         }
         fetchMessDetails() // Refresh mess menu after selection
     }
+
 
     @IBAction func logOutButton(_ sender: UIBarButtonItem) {
         do {
@@ -287,7 +375,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         for option in options {
             alert.addAction(UIAlertAction(title: option, style: .default, handler: { action in
                 self.mealButton.setTitle(option, for: .normal)
-                self.mealImage.image = UIImage(imageLiteralResourceName: option)
+                self.sfCode(for: option)
                 self.fetchMessDetails()
             }))
         }

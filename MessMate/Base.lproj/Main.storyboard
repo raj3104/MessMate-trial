@@ -610,14 +610,17 @@
                                                 <rect key="frame" x="79" y="56.333333333333258" width="282" height="34.333333333333343"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BAF-0O-UxU">
-                                                        <rect key="frame" x="0.0" y="0.0" width="75.333333333333329" height="34.333333333333336"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="49.666666666666664" height="34.333333333333336"/>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                         <state key="normal" title="Mayuri">
                                                             <color key="titleColor" systemColor="labelColor"/>
                                                         </state>
+                                                        <connections>
+                                                            <action selector="messButtonSelected:" destination="f3H-g0-jb5" eventType="touchUpInside" id="UF2-m7-Xa1"/>
+                                                        </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dOi-iG-bMD">
-                                                        <rect key="frame" x="103.33333333333334" y="0.0" width="75.333333333333343" height="34.333333333333336"/>
+                                                        <rect key="frame" x="77.666666666666657" y="0.0" width="49.333333333333343" height="34.333333333333336"/>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                         <state key="normal" title="Safal">
                                                             <color key="titleColor" systemColor="labelColor"/>
@@ -626,8 +629,19 @@
                                                             <action selector="messButtonSelected:" destination="f3H-g0-jb5" eventType="touchUpInside" id="Eq6-Qd-jqD"/>
                                                         </connections>
                                                     </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="StT-S1-7JK">
+                                                        <rect key="frame" x="155" y="0.0" width="49.666666666666657" height="34.333333333333336"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <state key="normal" title="JMB">
+                                                            <color key="titleColor" systemColor="labelColor"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="jmbButton1:" destination="f3H-g0-jb5" eventType="touchUpInside" id="Ybb-xJ-Bxb"/>
+                                                            <action selector="messButtonSelected:" destination="f3H-g0-jb5" eventType="touchUpInside" id="lyt-Q1-as4"/>
+                                                        </connections>
+                                                    </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3b1-co-xL2">
-                                                        <rect key="frame" x="206.66666666666669" y="0.0" width="75.333333333333314" height="34.333333333333336"/>
+                                                        <rect key="frame" x="232.66666666666671" y="0.0" width="49.333333333333343" height="34.333333333333336"/>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                         <state key="normal" title="CRCL">
                                                             <color key="titleColor" systemColor="labelColor"/>
@@ -679,6 +693,7 @@
                         <outlet property="crclButton" destination="3b1-co-xL2" id="KUB-u8-CM5"/>
                         <outlet property="doneButton" destination="F3D-OL-0tU" id="Vcs-UN-s49"/>
                         <outlet property="girlsHostelButton" destination="V9v-q1-H0V" id="ffl-j7-msQ"/>
+                        <outlet property="jmbButtonn" destination="StT-S1-7JK" id="JJy-je-Why"/>
                         <outlet property="loaderUserDetails" destination="Nq3-8d-a6q" id="CIE-N4-TQd"/>
                         <outlet property="mayuriButton" destination="BAF-0O-UxU" id="fjz-wz-pLH"/>
                         <outlet property="safalButton" destination="dOi-iG-bMD" id="VON-7a-XlN"/>
@@ -863,52 +878,95 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="j8C-zc-0jN">
-                                                <rect key="frame" x="170" y="165" width="100" height="100"/>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="moon.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="j8C-zc-0jN">
+                                                <rect key="frame" x="170" y="166" width="100" height="98.333333333333314"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="100" id="94m-pW-KTN"/>
                                                     <constraint firstAttribute="height" constant="100" id="hLo-C3-s0U"/>
                                                 </constraints>
                                             </imageView>
                                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Lc6-5P-aXZ">
-                                                <rect key="frame" x="95" y="337" width="250" height="32"/>
+                                                <rect key="frame" x="70" y="337" width="300" height="32"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="250" id="7hZ-eq-dCU"/>
+                                                    <constraint firstAttribute="width" constant="300" id="7hZ-eq-dCU"/>
                                                     <constraint firstAttribute="height" constant="31" id="x6t-IV-aeq"/>
                                                 </constraints>
                                                 <segments>
                                                     <segment title="Mayuri"/>
                                                     <segment title="Safal"/>
                                                     <segment title="CRCL"/>
+                                                    <segment title="JMB"/>
                                                 </segments>
                                                 <connections>
                                                     <action selector="messSelector:" destination="xmH-x8-DBn" eventType="valueChanged" id="QWz-77-Ggh"/>
                                                 </connections>
                                             </segmentedControl>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pSA-Au-7aN">
-                                                <rect key="frame" x="120" y="285" width="200" height="35"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="lDj-3R-qEe">
+                                                <rect key="frame" x="75.666666666666686" y="283" width="289" height="35"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c2h-sc-1jC">
+                                                        <rect key="frame" x="0.0" y="0.0" width="75" height="35"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="75" id="8Vo-w1-blI"/>
+                                                            <constraint firstAttribute="height" constant="35" id="yGr-Cr-iH9"/>
+                                                        </constraints>
+                                                        <state key="normal" title="Button"/>
+                                                        <buttonConfiguration key="configuration" style="plain" title="WED" cornerStyle="capsule">
+                                                            <backgroundConfiguration key="background">
+                                                                <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
+                                                            </backgroundConfiguration>
+                                                            <color key="baseForegroundColor" systemColor="labelColor"/>
+                                                        </buttonConfiguration>
+                                                        <connections>
+                                                            <action selector="weekButtonHandler:" destination="xmH-x8-DBn" eventType="touchUpInside" id="OxO-jA-HTg"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pSA-Au-7aN">
+                                                        <rect key="frame" x="87" y="0.0" width="140" height="35"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="35" id="ddl-Qi-urY"/>
+                                                            <constraint firstAttribute="width" constant="140" id="kEX-Rh-juS"/>
+                                                        </constraints>
+                                                        <color key="tintColor" systemColor="labelColor"/>
+                                                        <state key="normal" title="Button"/>
+                                                        <buttonConfiguration key="configuration" style="tinted" title="Breakfast" cornerStyle="capsule"/>
+                                                        <connections>
+                                                            <action selector="mealButtonPressed:" destination="xmH-x8-DBn" eventType="touchUpInside" id="VOt-aJ-Pv6"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mel-CY-FWc">
+                                                        <rect key="frame" x="239" y="0.0" width="50" height="35"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="50" id="5E7-2G-JEK"/>
+                                                            <constraint firstAttribute="height" constant="35" id="CuP-aH-MnX"/>
+                                                        </constraints>
+                                                        <state key="normal" title="Button"/>
+                                                        <buttonConfiguration key="configuration" style="plain" image="arrow.trianglehead.2.clockwise.rotate.90" catalog="system" cornerStyle="capsule">
+                                                            <backgroundConfiguration key="background">
+                                                                <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
+                                                            </backgroundConfiguration>
+                                                            <color key="baseForegroundColor" systemColor="labelColor"/>
+                                                        </buttonConfiguration>
+                                                        <connections>
+                                                            <action selector="resetButton:" destination="xmH-x8-DBn" eventType="touchUpInside" id="Iet-GY-2hY"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="35" id="ddl-Qi-urY"/>
-                                                    <constraint firstAttribute="width" constant="200" id="y2k-FO-NzT"/>
+                                                    <constraint firstAttribute="height" constant="35" id="VKP-mE-KSE"/>
                                                 </constraints>
-                                                <color key="tintColor" systemColor="labelColor"/>
-                                                <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="tinted" title="Button" cornerStyle="capsule"/>
-                                                <connections>
-                                                    <action selector="mealButtonPressed:" destination="xmH-x8-DBn" eventType="touchUpInside" id="VOt-aJ-Pv6"/>
-                                                </connections>
-                                            </button>
+                                            </stackView>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstItem="j8C-zc-0jN" firstAttribute="top" secondItem="b7j-Ay-V2D" secondAttribute="bottom" constant="5" id="0Ui-8E-FbG"/>
-                                            <constraint firstItem="pSA-Au-7aN" firstAttribute="centerX" secondItem="Ybw-5q-df4" secondAttribute="centerX" id="Yx3-2p-8vk"/>
+                                            <constraint firstItem="lDj-3R-qEe" firstAttribute="top" secondItem="j8C-zc-0jN" secondAttribute="bottom" constant="18" id="3ZH-Xi-AkB"/>
+                                            <constraint firstItem="Lc6-5P-aXZ" firstAttribute="top" secondItem="lDj-3R-qEe" secondAttribute="bottom" constant="19" id="F6X-ja-umr"/>
+                                            <constraint firstItem="lDj-3R-qEe" firstAttribute="centerX" secondItem="Ybw-5q-df4" secondAttribute="centerX" id="H0e-KH-XcG"/>
                                             <constraint firstItem="j8C-zc-0jN" firstAttribute="centerY" secondItem="Ybw-5q-df4" secondAttribute="centerY" id="bx6-tJ-gco"/>
                                             <constraint firstItem="j8C-zc-0jN" firstAttribute="centerX" secondItem="Ybw-5q-df4" secondAttribute="centerX" id="dH1-g4-42m"/>
                                             <constraint firstItem="Lc6-5P-aXZ" firstAttribute="centerX" secondItem="Ybw-5q-df4" secondAttribute="centerX" id="kFD-KD-BZz"/>
-                                            <constraint firstItem="Lc6-5P-aXZ" firstAttribute="top" secondItem="pSA-Au-7aN" secondAttribute="bottom" constant="17" id="pFA-ix-Z8p"/>
                                             <constraint firstItem="b7j-Ay-V2D" firstAttribute="centerX" secondItem="Ybw-5q-df4" secondAttribute="centerX" id="tIf-LU-qtI"/>
-                                            <constraint firstItem="pSA-Au-7aN" firstAttribute="top" secondItem="j8C-zc-0jN" secondAttribute="bottom" constant="20" id="yzm-Ut-fpa"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sn0-pU-qQt">
@@ -992,6 +1050,7 @@
                         <outlet property="mealImage" destination="j8C-zc-0jN" id="KdG-9c-OwK"/>
                         <outlet property="messSelector" destination="Lc6-5P-aXZ" id="gkN-Uc-Ux5"/>
                         <outlet property="tableView" destination="kRd-7P-aST" id="tHe-Tn-exc"/>
+                        <outlet property="weekButton" destination="c2h-sc-1jC" id="slZ-Pj-t3b"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QWG-SM-kOX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1019,8 +1078,10 @@
     </scenes>
     <resources>
         <image name="MessMate logo white dark" width="300" height="300"/>
+        <image name="arrow.trianglehead.2.clockwise.rotate.90" catalog="system" width="128" height="117"/>
         <image name="loader" width="225" height="225"/>
         <image name="login design light" width="100" height="100"/>
+        <image name="moon.fill" catalog="system" width="128" height="125"/>
         <image name="person" catalog="system" width="128" height="121"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
         <image name="register design light" width="100" height="100"/>
@@ -1031,16 +1092,16 @@
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="secondarySystemBackgroundColor">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray3Color">
-            <color red="0.7803921568627451" green="0.7803921568627451" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.78039215689999997" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

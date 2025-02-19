@@ -70,6 +70,7 @@ class UserDetailsViewController: UIViewController {
 
             safalButton.isEnabled = false
             safalButton.isHidden=true
+            jmbButtonn.isHidden=true
             safalButton.alpha = 0.3
 
             mayuriButton.isEnabled = true  // ✅ Ensure Mayuri is enabled
@@ -81,6 +82,7 @@ class UserDetailsViewController: UIViewController {
 
             safalButton.isEnabled = true
             safalButton.isHidden=false
+            jmbButtonn.isHidden=false
             safalButton.alpha = 1.0
 
             mayuriButton.isEnabled = true  // ✅ Ensure Mayuri is enabled
@@ -95,6 +97,10 @@ class UserDetailsViewController: UIViewController {
     }
 
 
+    @IBOutlet weak var jmbButtonn: UIButton!
+    @IBAction func jmbButton1(_ sender: UIButton) {
+    }
+    @IBOutlet weak var jmbButton: UILabel!
     // MARK: - Mess Selection
     @IBAction func messButtonSelected(_ sender: UIButton) {
         // Prevent selection of disabled buttons
