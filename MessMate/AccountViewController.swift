@@ -14,6 +14,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var mealButton: UIButton!
     @IBOutlet weak var nextMealLabel: UILabel!
     
+    @IBOutlet weak var blurView: UIView!
     var messData: [String: [String]] = [:]
     var userHostel: String = ""
     var userMess: String = ""
@@ -30,6 +31,15 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var hostelSelectorInfo: UISegmentedControl!
     override func viewDidLoad() {
         super.viewDidLoad()
+        addBlurEffect()
+        self.mealImage.alpha = 0
+        self.mealImage.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+          
+          // Animate appearance smoothly
+          UIView.animate(withDuration: 1.2, delay: 0.3, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.5, options: .curveEaseOut) {
+              self.mealImage.alpha = 1
+              self.mealImage.transform = CGAffineTransform.identity
+          }
 
         tableView.delegate = self
         tableView.dataSource = self
@@ -38,8 +48,10 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         mealButton.setTitle(defaultMeal, for: .normal)
         mealImage.image = UIImage(imageLiteralResourceName: defaultMeal)
         resetButton(weekButton)
+        
 
-        fetchUserDetails() // ✅ Get user details
+        fetchUserDetails()
+        // ✅ Get user details
     }
 
     func fetchUserDetails() {
@@ -377,6 +389,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
                 self.mealButton.setTitle(option, for: .normal)
                 self.sfCode(for: option)
                 self.fetchMessDetails()
+                self.animateMealImage() // Call animation after meal change
             }))
         }
 
@@ -391,5 +404,49 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
 
         present(alert, animated: true)
     }
+
+    
+    func animateMealImage() {
+        // Apply a flip transition animation
+        UIView.transition(with: mealImage, duration: 0.5, options: .transitionFlipFromLeft, animations: {
+            self.mealImage.alpha = 0.5
+        }) { _ in
+            UIView.animate(withDuration: 0.4) {
+                self.mealImage.alpha = 1
+            }
+        }
+
+        // Add a bounce effect
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1.0, options: []) {
+            self.mealImage.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+        } completion: { _ in
+            UIView.animate(withDuration: 0.3) {
+                self.mealImage.transform = CGAffineTransform.identity
+            }
+        }
+    }
+
+    
+    func addBlurEffect() {
+            let blurEffect = UIBlurEffect(style: .systemMaterial) // System background color effect
+            let blurView = UIVisualEffectView(effect: blurEffect)
+            
+            blurView.frame = view.bounds
+            blurView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        blurView.isUserInteractionEnabled = false
+
+            view.addSubview(blurView)
+            
+            self.blurView = blurView
+            
+            // Animate blur fading out in 2 seconds
+            DispatchQueue.main.asyncAfter(deadline: .now() ) { // Delay start for visibility
+                UIView.animate(withDuration: 0.75) {
+                    blurView.effect = nil // Remove blur smoothly
+                }
+               
+            }
+        }
+
 
 }
