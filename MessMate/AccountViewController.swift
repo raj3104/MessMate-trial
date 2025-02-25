@@ -31,6 +31,10 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var hostelSelectorInfo: UISegmentedControl!
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.separatorStyle = .none
+        tableView.isUserInteractionEnabled = false
+
+
         addBlurEffect()
         self.mealImage.alpha = 0
         self.mealImage.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
@@ -86,7 +90,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
                         } else {
                             self.hostelSelectorInfo.selectedSegmentIndex = 0
                             self.hostelSelectorInfo.selectedSegmentTintColor = UIColor.systemBlue
-                            self.messSelector.setTitle("CRCL", forSegmentAt: 2)
+                            self.messSelector.setTitle("RasSense", forSegmentAt: 2)
                             self.messSelector.setEnabled(true, forSegmentAt: 1)
                            
                         }
@@ -117,22 +121,19 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
 
 
     func animateGreet(username: String) {
-        let words = username.components(separatedBy: " ").map { word in
-            return word.prefix(1).uppercased() + word.dropFirst()
-        }
+        // Extract first name (everything before the first whitespace)
+        let firstName = username.components(separatedBy: " ").first ?? username
         
-        let fullGreeting = "Hello, " + words.joined(separator: " ")
+        let fullGreeting = "Hello, " + firstName.prefix(1).uppercased() + firstName.dropFirst()
         greetingLabel.text = "" // Clear label before animation
-        
         
         for (index, letter) in fullGreeting.enumerated() {
             DispatchQueue.main.asyncAfter(deadline: .now() + (0.1 * Double(index))) {
                 self.greetingLabel.text?.append("\(letter)")
-                
-                
             }
         }
     }
+
 
     func determineNextMeal() -> String {
         let hour = Calendar.current.component(.hour, from: Date())
@@ -286,7 +287,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         weekButton.setTitle(String(today.prefix(3)), for: .normal) // Reset week button
            mealButton.setTitle(defaultMeal, for: .normal) // Reset meal button
         sfCode()
-
+        animateMealImage()
            fetchMessDetails(for: today) // Load data for today
     }
     
@@ -296,7 +297,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
             hostelSelectorInfo.selectedSegmentTintColor = UIColor.systemBlue
 
             // ✅ Update Mess Selector for Boys Hostel
-            messSelector.setTitle("CRCL", forSegmentAt: 2)
+            messSelector.setTitle("RasSense", forSegmentAt: 2)
             messSelector.setTitle("JMB", forSegmentAt: 3)  // ✅ JMB Added
             messSelector.setTitle("Safal", forSegmentAt: 1)
             messSelector.setEnabled(true, forSegmentAt: 1)
@@ -332,19 +333,55 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         guard let user = Auth.auth().currentUser else { return }
         let userRef = db.collection("users").document(user.uid)
 
-        userRef.delete { error in
+        // First, delete all subcollections (if any)
+        deleteAllSubcollections(for: userRef) { success in
+            if success {
+                // Now delete the main user document
+                userRef.delete { error in
+                    if let error = error {
+                        print("❌ Error deleting Firestore user document: \(error.localizedDescription)")
+                        return
+                    }
+                    print("✅ Firestore user document deleted.")
+
+                    // Finally, delete the Firebase Auth account
+                    user.delete { error in
+                        if let error = error {
+                            print("❌ Error deleting Firebase Auth account: \(error.localizedDescription)")
+                        } else {
+                            print("✅ User account deleted successfully.")
+                            self.navigateToLogin()
+                        }
+                    }
+                }
+            } else {
+                print("❌ Error deleting user subcollections.")
+            }
+        }
+    }
+    
+    
+    func deleteAllSubcollections(for documentRef: DocumentReference, completion: @escaping (Bool) -> Void) {
+        documentRef.collection("user_data").getDocuments { snapshot, error in
             if let error = error {
-                print("❌ Error deleting Firestore data: \(error.localizedDescription)")
+                print("❌ Error fetching subcollection: \(error.localizedDescription)")
+                completion(false)
                 return
             }
-            print("✅ Firestore user data deleted successfully.")
-
-            user.delete { error in
+            
+            let batch = self.db.batch()
+            
+            snapshot?.documents.forEach { doc in
+                batch.deleteDocument(doc.reference)
+            }
+            
+            batch.commit { error in
                 if let error = error {
-                    print("❌ Error deleting Firebase Auth account: \(error.localizedDescription)")
+                    print("❌ Error deleting subcollection: \(error.localizedDescription)")
+                    completion(false)
                 } else {
-                    print("✅ User deleted successfully.")
-                    self.navigateToLogin()
+                    print("✅ Subcollection deleted successfully.")
+                    completion(true)
                 }
             }
         }
@@ -356,7 +393,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         case 1:
             userMess = "Safal"
         case 2:
-            userMess = "CRCL"
+            userMess = "RasSense"
         case 3:
             userMess = "JMB"  // ✅ Added JMB as Segment 3
         default:

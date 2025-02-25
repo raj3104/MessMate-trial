@@ -868,11 +868,11 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ybw-5q-df4">
                                         <rect key="frame" x="0.0" y="0.0" width="440" height="430"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b7j-Ay-V2D">
-                                                <rect key="frame" x="220" y="35" width="0.0" height="125"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b7j-Ay-V2D">
+                                                <rect key="frame" x="45" y="35" width="350" height="125"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="125" id="Ag5-eb-fOE"/>
-                                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="350" id="Bye-6S-ydn"/>
+                                                    <constraint firstAttribute="width" constant="350" id="Bye-6S-ydn"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="HoeflerText-Regular" family="Hoefler Text" pointSize="55"/>
                                                 <nil key="textColor"/>
@@ -902,16 +902,15 @@
                                                 </connections>
                                             </segmentedControl>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="lDj-3R-qEe">
-                                                <rect key="frame" x="74" y="283" width="292" height="35"/>
+                                                <rect key="frame" x="117" y="283" width="206" height="35"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c2h-sc-1jC">
-                                                        <rect key="frame" x="0.0" y="0.0" width="84" height="35"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="51.333333333333336" height="35"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="8Vo-w1-blI"/>
                                                             <constraint firstAttribute="height" constant="35" id="yGr-Cr-iH9"/>
                                                         </constraints>
                                                         <state key="normal" title="Button"/>
-                                                        <buttonConfiguration key="configuration" style="plain" title="WED" cornerStyle="capsule">
+                                                        <buttonConfiguration key="configuration" style="plain" title="ccc" cornerStyle="capsule">
                                                             <backgroundConfiguration key="background">
                                                                 <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                                             </backgroundConfiguration>
@@ -922,10 +921,9 @@
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pSA-Au-7aN">
-                                                        <rect key="frame" x="96" y="0.0" width="140" height="35"/>
+                                                        <rect key="frame" x="63.333333333333336" y="0.0" width="96.333333333333314" height="35"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="35" id="ddl-Qi-urY"/>
-                                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="140" id="kEX-Rh-juS"/>
                                                         </constraints>
                                                         <color key="tintColor" systemColor="labelColor"/>
                                                         <state key="normal" title="Button"/>
@@ -935,15 +933,14 @@
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mel-CY-FWc">
-                                                        <rect key="frame" x="248" y="0.0" width="44" height="35"/>
+                                                        <rect key="frame" x="171.66666666666669" y="0.0" width="34.333333333333343" height="35"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="5E7-2G-JEK"/>
                                                             <constraint firstAttribute="height" constant="35" id="CuP-aH-MnX"/>
                                                         </constraints>
                                                         <state key="normal" title="Button"/>
-                                                        <buttonConfiguration key="configuration" style="plain" image="arrow.trianglehead.2.clockwise.rotate.90" catalog="system" cornerStyle="capsule">
+                                                        <buttonConfiguration key="configuration" style="plain" image="arrow.clockwise" catalog="system" cornerStyle="capsule">
                                                             <backgroundConfiguration key="background">
-                                                                <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
+                                                                <color key="backgroundColor" systemColor="separatorColor"/>
                                                             </backgroundConfiguration>
                                                             <color key="baseForegroundColor" systemColor="labelColor"/>
                                                         </buttonConfiguration>
@@ -970,8 +967,8 @@
                                             <constraint firstItem="j8C-zc-0jN" firstAttribute="top" secondItem="b7j-Ay-V2D" secondAttribute="bottom" constant="5" id="0Ui-8E-FbG"/>
                                             <constraint firstItem="lDj-3R-qEe" firstAttribute="top" secondItem="j8C-zc-0jN" secondAttribute="bottom" constant="18" id="3ZH-Xi-AkB"/>
                                             <constraint firstItem="Lc6-5P-aXZ" firstAttribute="top" secondItem="lDj-3R-qEe" secondAttribute="bottom" constant="19" id="F6X-ja-umr"/>
-                                            <constraint firstItem="lDj-3R-qEe" firstAttribute="centerX" secondItem="Ybw-5q-df4" secondAttribute="centerX" id="H0e-KH-XcG"/>
                                             <constraint firstItem="zZJ-wk-gMp" firstAttribute="leading" secondItem="Ybw-5q-df4" secondAttribute="leading" id="L2D-Rz-eHl"/>
+                                            <constraint firstItem="lDj-3R-qEe" firstAttribute="centerX" secondItem="Ybw-5q-df4" secondAttribute="centerX" id="Npx-2x-BP7"/>
                                             <constraint firstItem="zZJ-wk-gMp" firstAttribute="top" secondItem="Ybw-5q-df4" secondAttribute="top" id="UYN-V5-1Ds"/>
                                             <constraint firstItem="j8C-zc-0jN" firstAttribute="centerY" secondItem="Ybw-5q-df4" secondAttribute="centerY" id="bx6-tJ-gco"/>
                                             <constraint firstItem="j8C-zc-0jN" firstAttribute="centerX" secondItem="Ybw-5q-df4" secondAttribute="centerX" id="dH1-g4-42m"/>
@@ -1089,7 +1086,7 @@
     </scenes>
     <resources>
         <image name="MessMate logo white dark" width="300" height="300"/>
-        <image name="arrow.trianglehead.2.clockwise.rotate.90" catalog="system" width="128" height="117"/>
+        <image name="arrow.clockwise" catalog="system" width="110" height="128"/>
         <image name="loader" width="225" height="225"/>
         <image name="login design light" width="100" height="100"/>
         <image name="moon.fill" catalog="system" width="128" height="125"/>
@@ -1104,6 +1101,9 @@
         </systemColor>
         <systemColor name="secondarySystemBackgroundColor">
             <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="separatorColor">
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
